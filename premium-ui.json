@@ -1,0 +1,11 @@
+{
+  "profile": "product-admin",
+  "sourceRoots": ["frontend/src"],
+  "locale": "en-MY",
+  "canonicalMap": "UX-CONTRACT.md",
+  "requiredCapabilities": ["Select/Listbox", "Form", "Scrollbar"],
+  "ownership": {"Select/Listbox": "native"},
+  "requiredCommands": ["typecheck", "e2e", "build"],
+  "commands": {"typecheck":"npm --prefix frontend run typecheck", "e2e":"npm --prefix frontend run test:e2e", "build":"npm --prefix frontend run build"},
+  "evidence": {"failurePaths":"frontend/tests/workflow.spec.ts", "fullFlow":"frontend/tests/workflow.spec.ts"}
+}

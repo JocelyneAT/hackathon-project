@@ -1,0 +1,2125 @@
+{
+  "countries": [
+    {
+      "id": "MY",
+      "code": "MY",
+      "name": "Malaysia",
+      "supported": true,
+      "capabilities": [
+        "curated occupations",
+        "skill assessments",
+        "learning pathways",
+        "illustrative employer alignment"
+      ],
+      "market_data": "unavailable",
+      "evidence_status": "curated illustrative",
+      "notes": "Operational planning with illustrative local requirements. No verified Malaysian demand or vacancies."
+    },
+    {
+      "id": "SG",
+      "code": "SG",
+      "name": "Singapore",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "ID",
+      "code": "ID",
+      "name": "Indonesia",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "PH",
+      "code": "PH",
+      "name": "Philippines",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "TH",
+      "code": "TH",
+      "name": "Thailand",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "VN",
+      "code": "VN",
+      "name": "Vietnam",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "BN",
+      "code": "BN",
+      "name": "Brunei",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "KH",
+      "code": "KH",
+      "name": "Cambodia",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "LA",
+      "code": "LA",
+      "name": "Laos",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "MM",
+      "code": "MM",
+      "name": "Myanmar",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    },
+    {
+      "id": "TL",
+      "code": "TL",
+      "name": "Timor-Leste",
+      "supported": false,
+      "capabilities": [],
+      "market_data": "unavailable",
+      "evidence_status": "unavailable",
+      "notes": "Local datasets have not been imported. Malaysian figures are never substituted."
+    }
+  ],
+  "sources": [
+    {
+      "id": "shiftos-curated",
+      "name": "SHIFT//OS author-curated occupation framework",
+      "url": null,
+      "source_url": null,
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "methodology": "Team-authored skill requirements, learning effort and task exposure assumptions for testing. Not a national classification, validated proficiency standard, demand forecast or research estimate."
+    },
+    {
+      "id": "shiftos-synthetic",
+      "name": "SHIFT//OS fictional employer and market fixtures",
+      "url": null,
+      "source_url": null,
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "synthetic demonstration",
+      "methodology": "Fictional organisations, role requirements and dated observations for algorithm demonstrations; never actual vacancies or labour-market evidence."
+    },
+    {
+      "id": "sqlbolt",
+      "name": "SQLBolt",
+      "url": "https://sqlbolt.com/",
+      "source_url": "https://sqlbolt.com/",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "kaggle-python",
+      "name": "Kaggle Learn Python",
+      "url": "https://www.kaggle.com/learn/python",
+      "source_url": "https://www.kaggle.com/learn/python",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "ms-excel",
+      "name": "Microsoft Excel help and learning",
+      "url": "https://support.microsoft.com/en-us/excel/",
+      "source_url": "https://support.microsoft.com/en-us/excel/",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "khan-statistics",
+      "name": "Khan Academy Statistics and probability",
+      "url": "https://www.khanacademy.org/math/statistics-probability",
+      "source_url": "https://www.khanacademy.org/math/statistics-probability",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "ms-requirements",
+      "name": "Microsoft Learn requirements module",
+      "url": "https://learn.microsoft.com/en-us/training/modules/work-with-requirements/",
+      "source_url": "https://learn.microsoft.com/en-us/training/modules/work-with-requirements/",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "ms-powerbi",
+      "name": "Microsoft Learn Power BI",
+      "url": "https://learn.microsoft.com/en-us/training/powerplatform/power-bi",
+      "source_url": "https://learn.microsoft.com/en-us/training/powerplatform/power-bi",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "ms-automate",
+      "name": "Microsoft Learn Power Automate",
+      "url": "https://learn.microsoft.com/en-us/training/powerplatform/power-automate",
+      "source_url": "https://learn.microsoft.com/en-us/training/powerplatform/power-automate",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "ms-teams",
+      "name": "Microsoft Teams help and learning",
+      "url": "https://support.microsoft.com/en-us/teams/",
+      "source_url": "https://support.microsoft.com/en-us/teams/",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "un-sdg4",
+      "name": "United Nations SDG 4 targets",
+      "url": "https://sdgs.un.org/goals/goal4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "un-sdg8",
+      "name": "United Nations SDG 8 targets",
+      "url": "https://sdgs.un.org/goals/goal8",
+      "source_url": "https://sdgs.un.org/goals/goal8",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "un-sdg12",
+      "name": "United Nations SDG 12 targets",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "source_url": "https://sdgs.un.org/goals/goal12",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Official reference; no labour-market quantities imported."
+    },
+    {
+      "id": "esco-context",
+      "name": "European Commission ESCO occupation classification",
+      "url": "https://esco.ec.europa.eu/en/classification/occupation_main",
+      "source_url": "https://esco.ec.europa.eu/en/classification/occupation_main",
+      "publication_date": null,
+      "verified_at": "2026-10-21",
+      "retrieved_at": "2026-10-21",
+      "country": "GLOBAL",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "methodology": "Architecture context only. No ESCO taxonomy export or verified crosswalk has been imported; local occupation requirements remain illustrative."
+    }
+  ],
+  "skills": [
+    {
+      "id": "sql",
+      "name": "SQL",
+      "aliases": [
+        "Structured Query Language",
+        "SQL queries"
+      ],
+      "hours_per_level": 16,
+      "prerequisites": [],
+      "levels": {
+        "1": "Retrieve and filter records",
+        "2": "Join and aggregate tables",
+        "3": "Write independent multi-table queries",
+        "4": "Optimise complex queries",
+        "5": "Design and evaluate data-access strategies"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "python",
+      "name": "Python",
+      "aliases": [
+        "Python programming",
+        "pandas"
+      ],
+      "hours_per_level": 22,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise variables and expressions",
+        "2": "Use loops and functions",
+        "3": "Build tested data-processing scripts",
+        "4": "Troubleshoot complex programs",
+        "5": "Design robust software architectures"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "excel",
+      "name": "Microsoft Excel",
+      "aliases": [
+        "Excel",
+        "MS Excel",
+        "spreadsheets"
+      ],
+      "hours_per_level": 12,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise cell references",
+        "2": "Apply formulas and filters",
+        "3": "Build repeatable analyses and PivotTables",
+        "4": "Audit complex models",
+        "5": "Design governed analytical workbooks"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "statistics",
+      "name": "Statistics",
+      "aliases": [
+        "statistical analysis",
+        "probability"
+      ],
+      "hours_per_level": 18,
+      "prerequisites": [],
+      "levels": {
+        "1": "Interpret mean and median",
+        "2": "Calculate descriptive summaries",
+        "3": "Select and interpret common statistical methods",
+        "4": "Evaluate study assumptions",
+        "5": "Design rigorous analytical studies"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "business-analysis",
+      "name": "Business Analysis",
+      "aliases": [
+        "requirements analysis",
+        "requirements gathering",
+        "business analyst"
+      ],
+      "hours_per_level": 16,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise stakeholders and requirements",
+        "2": "Write testable acceptance criteria",
+        "3": "Elicit and validate competing needs",
+        "4": "Model complex business processes",
+        "5": "Lead enterprise change evaluation"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "power-bi",
+      "name": "Power BI",
+      "aliases": [
+        "PowerBI",
+        "Microsoft Power BI",
+        "dashboard"
+      ],
+      "hours_per_level": 16,
+      "prerequisites": [
+        "excel"
+      ],
+      "levels": {
+        "1": "Read dashboard visuals",
+        "2": "Create connected charts",
+        "3": "Build data models and reports",
+        "4": "Optimise semantic models",
+        "5": "Design governed enterprise BI"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "communication",
+      "name": "Communication",
+      "aliases": [
+        "presentation",
+        "presentations",
+        "stakeholder communication"
+      ],
+      "hours_per_level": 10,
+      "prerequisites": [],
+      "levels": {
+        "1": "Identify audience and purpose",
+        "2": "Write clear structured updates",
+        "3": "Explain evidence to different audiences",
+        "4": "Resolve complex stakeholder disagreements",
+        "5": "Design communication strategies"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "automation",
+      "name": "Workflow Automation",
+      "aliases": [
+        "Power Automate",
+        "process automation",
+        "RPA"
+      ],
+      "hours_per_level": 20,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise repeatable workflows",
+        "2": "Build a simple trigger and action",
+        "3": "Create tested automated workflows",
+        "4": "Troubleshoot resilient integrations",
+        "5": "Govern enterprise automation portfolios"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "sustainability",
+      "name": "Sustainability Reporting",
+      "aliases": [
+        "ESG",
+        "sustainability",
+        "carbon reporting"
+      ],
+      "hours_per_level": 18,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise resource and reporting concepts",
+        "2": "Collect traceable sustainability metrics",
+        "3": "Prepare transparent performance analyses",
+        "4": "Evaluate reporting boundaries",
+        "5": "Design auditable reporting systems"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    }
+  ],
+  "occupations": [
+    {
+      "id": "admin-assistant",
+      "name": "Administrative Assistant",
+      "title": "Administrative Assistant",
+      "description": "Coordinate records, scheduling and clear operational communication.",
+      "interests": [
+        "organisation",
+        "collaboration",
+        "operations"
+      ],
+      "requirements": [
+        {
+          "skill_id": "excel",
+          "required_level": 2,
+          "weight": 3
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 1,
+          "weight": 1
+        },
+        {
+          "skill_id": "automation",
+          "required_level": 2,
+          "weight": 2
+        }
+      ],
+      "portfolio_project": "Create a documented scheduling and reporting workflow with a checked spreadsheet.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "customer-support",
+      "name": "Customer Support Specialist",
+      "title": "Customer Support Specialist",
+      "description": "Resolve customer enquiries and document recurring service issues.",
+      "interests": [
+        "collaboration",
+        "people",
+        "communication"
+      ],
+      "requirements": [
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "automation",
+          "required_level": 1,
+          "weight": 1
+        }
+      ],
+      "portfolio_project": "Analyse a fictional support-ticket log and write an escalation guide.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "data-analyst",
+      "name": "Data Analyst",
+      "title": "Data Analyst",
+      "description": "Turn reliable data into decisions through queries, analysis and communication.",
+      "interests": [
+        "analytics",
+        "technology",
+        "problem-solving"
+      ],
+      "requirements": [
+        {
+          "skill_id": "sql",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "python",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "portfolio_project": "Analyse a public dataset with SQL, validate the results and present a dashboard with limitations.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "business-analyst",
+      "name": "Business Analyst",
+      "title": "Business Analyst",
+      "description": "Translate stakeholder needs into clear, testable business requirements.",
+      "interests": [
+        "collaboration",
+        "problem-solving",
+        "operations"
+      ],
+      "requirements": [
+        {
+          "skill_id": "business-analysis",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 1
+        }
+      ],
+      "portfolio_project": "Interview a volunteer stakeholder, map a process and write acceptance criteria for an improvement.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "bi-analyst",
+      "name": "Business Intelligence Analyst",
+      "title": "Business Intelligence Analyst",
+      "description": "Build trusted reporting models and dashboards for business teams.",
+      "interests": [
+        "analytics",
+        "technology",
+        "organisation"
+      ],
+      "requirements": [
+        {
+          "skill_id": "sql",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "power-bi",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 2
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "portfolio_project": "Create a small star schema, a Power BI report and a reproducible data-quality checklist.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "operations-analyst",
+      "name": "Operations Analyst",
+      "title": "Operations Analyst",
+      "description": "Investigate operational bottlenecks and measure practical improvements.",
+      "interests": [
+        "operations",
+        "analytics",
+        "problem-solving"
+      ],
+      "requirements": [
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "portfolio_project": "Measure a fictional order workflow, locate bottlenecks and propose a tested process change.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "ai-automation",
+      "name": "AI Automation Specialist",
+      "title": "AI Automation Specialist",
+      "description": "Develop supervised workflow automations with checks and human review.",
+      "interests": [
+        "technology",
+        "problem-solving",
+        "innovation"
+      ],
+      "requirements": [
+        {
+          "skill_id": "automation",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "python",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 3,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 2,
+          "weight": 1
+        }
+      ],
+      "portfolio_project": "Automate a document-routing workflow with an audit log, failure recovery and human approval.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    },
+    {
+      "id": "sustainability-analyst",
+      "name": "Sustainability Data Analyst",
+      "title": "Sustainability Data Analyst",
+      "description": "Prepare traceable resource-use metrics and explain sustainability findings.",
+      "interests": [
+        "sustainability",
+        "analytics",
+        "impact"
+      ],
+      "requirements": [
+        {
+          "skill_id": "sustainability",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "portfolio_project": "Build a resource-use dashboard with metric definitions, reporting boundaries and source traceability.",
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "curated illustrative",
+      "market_outlook": {
+        "status": "unavailable",
+        "note": "No verified occupation-demand observations imported."
+      }
+    }
+  ],
+  "tasks": [
+    {
+      "id": "admin-assistant-task-1",
+      "occupation_id": "admin-assistant",
+      "description": "Update records and compile routine reports",
+      "weight": 4,
+      "exposure": 0.85,
+      "augmentation": "Draft standard reports and flag inconsistent entries",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "excel",
+        "automation"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "admin-assistant-task-2",
+      "occupation_id": "admin-assistant",
+      "description": "Coordinate schedules and appointments",
+      "weight": 3,
+      "exposure": 0.65,
+      "augmentation": "Suggest schedules for human confirmation",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "automation"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "admin-assistant-task-3",
+      "occupation_id": "admin-assistant",
+      "description": "Handle sensitive requests and exceptions",
+      "weight": 3,
+      "exposure": 0.25,
+      "augmentation": "Summarise context for a responsible human decision",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "communication"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "customer-support-task-1",
+      "occupation_id": "customer-support",
+      "description": "Answer repeat enquiries",
+      "weight": 4,
+      "exposure": 0.8,
+      "augmentation": "Draft responses grounded in an approved knowledge base",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "automation"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "customer-support-task-2",
+      "occupation_id": "customer-support",
+      "description": "Investigate escalated customer issues",
+      "weight": 4,
+      "exposure": 0.4,
+      "augmentation": "Summarise case history for human resolution",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "communication",
+        "business-analysis"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "customer-support-task-3",
+      "occupation_id": "customer-support",
+      "description": "Document service trends",
+      "weight": 2,
+      "exposure": 0.6,
+      "augmentation": "Group common issues for review",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "excel"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "data-analyst-task-1",
+      "occupation_id": "data-analyst",
+      "description": "Clean data and prepare repeatable queries",
+      "weight": 4,
+      "exposure": 0.7,
+      "augmentation": "Suggest queries and data-cleaning checks",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "sql",
+        "python"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "data-analyst-task-2",
+      "occupation_id": "data-analyst",
+      "description": "Interpret findings and challenge assumptions",
+      "weight": 4,
+      "exposure": 0.35,
+      "augmentation": "Generate alternative hypotheses for analyst review",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "statistics",
+        "communication"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "data-analyst-task-3",
+      "occupation_id": "data-analyst",
+      "description": "Prepare reports and explain limitations",
+      "weight": 2,
+      "exposure": 0.6,
+      "augmentation": "Draft chart descriptions using validated results",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "communication"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "business-analyst-task-1",
+      "occupation_id": "business-analyst",
+      "description": "Elicit and negotiate stakeholder requirements",
+      "weight": 4,
+      "exposure": 0.25,
+      "augmentation": "Summarise interviews for stakeholder validation",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "communication",
+        "business-analysis"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "business-analyst-task-2",
+      "occupation_id": "business-analyst",
+      "description": "Draft process maps and acceptance criteria",
+      "weight": 3,
+      "exposure": 0.65,
+      "augmentation": "Draft criteria to check against agreed needs",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "business-analysis"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "business-analyst-task-3",
+      "occupation_id": "business-analyst",
+      "description": "Evaluate tradeoffs and business cases",
+      "weight": 3,
+      "exposure": 0.4,
+      "augmentation": "Organise evidence for human decisions",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "business-analysis",
+        "excel"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "bi-analyst-task-1",
+      "occupation_id": "bi-analyst",
+      "description": "Prepare data models and reporting queries",
+      "weight": 4,
+      "exposure": 0.7,
+      "augmentation": "Suggest measures and query transformations",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "sql",
+        "power-bi"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "bi-analyst-task-2",
+      "occupation_id": "bi-analyst",
+      "description": "Design dashboards with users",
+      "weight": 3,
+      "exposure": 0.5,
+      "augmentation": "Propose views for user testing",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "power-bi",
+        "communication"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "bi-analyst-task-3",
+      "occupation_id": "bi-analyst",
+      "description": "Audit metric definitions and quality",
+      "weight": 3,
+      "exposure": 0.35,
+      "augmentation": "Flag inconsistencies for analyst investigation",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "statistics"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "operations-analyst-task-1",
+      "occupation_id": "operations-analyst",
+      "description": "Compile operational performance reports",
+      "weight": 3,
+      "exposure": 0.75,
+      "augmentation": "Automate draft operational summaries",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "excel",
+        "automation"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "operations-analyst-task-2",
+      "occupation_id": "operations-analyst",
+      "description": "Investigate bottlenecks with process owners",
+      "weight": 4,
+      "exposure": 0.35,
+      "augmentation": "Organise process evidence for validation",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "business-analysis"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "operations-analyst-task-3",
+      "occupation_id": "operations-analyst",
+      "description": "Evaluate improvements and measure effects",
+      "weight": 3,
+      "exposure": 0.4,
+      "augmentation": "Suggest comparison methods for review",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "statistics"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "ai-automation-task-1",
+      "occupation_id": "ai-automation",
+      "description": "Build workflow integrations",
+      "weight": 4,
+      "exposure": 0.65,
+      "augmentation": "Draft integration code and test cases",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "automation",
+        "python"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "ai-automation-task-2",
+      "occupation_id": "ai-automation",
+      "description": "Test failures and design human controls",
+      "weight": 4,
+      "exposure": 0.3,
+      "augmentation": "Propose edge cases for engineer review",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "business-analysis",
+        "python"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "ai-automation-task-3",
+      "occupation_id": "ai-automation",
+      "description": "Monitor automated systems and exceptions",
+      "weight": 2,
+      "exposure": 0.55,
+      "augmentation": "Group alerts and suggest investigations",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "automation"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "sustainability-analyst-task-1",
+      "occupation_id": "sustainability-analyst",
+      "description": "Collect and clean resource-use metrics",
+      "weight": 4,
+      "exposure": 0.65,
+      "augmentation": "Identify missing records and inconsistent units",
+      "human_judgment": false,
+      "adaptation_skills": [
+        "excel",
+        "sql"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "sustainability-analyst-task-2",
+      "occupation_id": "sustainability-analyst",
+      "description": "Define boundaries and assess evidence quality",
+      "weight": 3,
+      "exposure": 0.25,
+      "augmentation": "Organise source evidence for accountable review",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "sustainability",
+        "statistics"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    },
+    {
+      "id": "sustainability-analyst-task-3",
+      "occupation_id": "sustainability-analyst",
+      "description": "Communicate sustainability performance",
+      "weight": 3,
+      "exposure": 0.5,
+      "augmentation": "Draft narratives from verified metrics",
+      "human_judgment": true,
+      "adaptation_skills": [
+        "communication",
+        "sustainability"
+      ],
+      "country": "MY",
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "assessed_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "methodology": "Team-authored illustrative task shares and technical exposure. Not measured displacement risk."
+    }
+  ],
+  "resources": [
+    {
+      "id": "sqlbolt-foundations",
+      "title": "SQLBolt interactive SQL lessons",
+      "provider": "SQLBolt",
+      "url": "https://sqlbolt.com/",
+      "skill_ids": [
+        "sql"
+      ],
+      "hours": 8,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "sqlbolt",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "interactive lessons",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "kaggle-python-foundations",
+      "title": "Python",
+      "provider": "Kaggle Learn",
+      "url": "https://www.kaggle.com/learn/python",
+      "skill_ids": [
+        "python"
+      ],
+      "hours": 8,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "kaggle-python",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "course",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "excel-learning",
+      "title": "Excel help and learning",
+      "provider": "Microsoft Support",
+      "url": "https://support.microsoft.com/en-us/excel/",
+      "skill_ids": [
+        "excel"
+      ],
+      "hours": 10,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "ms-excel",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "reference and guided practice",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "statistics-foundations",
+      "title": "Statistics and probability",
+      "provider": "Khan Academy",
+      "url": "https://www.khanacademy.org/math/statistics-probability",
+      "skill_ids": [
+        "statistics"
+      ],
+      "hours": 14,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "khan-statistics",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "course collection",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "requirements-foundations",
+      "title": "Work with requirements for Microsoft Power Platform and Dynamics 365",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/modules/work-with-requirements/",
+      "skill_ids": [
+        "business-analysis"
+      ],
+      "hours": 5,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "ms-requirements",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "training module",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "powerbi-learning",
+      "title": "Microsoft Power BI training",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/powerplatform/power-bi",
+      "skill_ids": [
+        "power-bi"
+      ],
+      "hours": 12,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "ms-powerbi",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "learning path collection",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "teams-communication",
+      "title": "Microsoft Teams help and learning",
+      "provider": "Microsoft Support",
+      "url": "https://support.microsoft.com/en-us/teams/",
+      "skill_ids": [
+        "communication"
+      ],
+      "hours": 4,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "ms-teams",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "collaboration tool reference",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "automation-learning",
+      "title": "Microsoft Power Automate training",
+      "provider": "Microsoft Learn",
+      "url": "https://learn.microsoft.com/en-us/training/powerplatform/power-automate",
+      "skill_ids": [
+        "automation"
+      ],
+      "hours": 12,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "ms-automate",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "learning path collection",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    },
+    {
+      "id": "sdg-reporting-reference",
+      "title": "SDG 12 targets and reporting context",
+      "provider": "United Nations",
+      "url": "https://sdgs.un.org/goals/goal12",
+      "skill_ids": [
+        "sustainability"
+      ],
+      "hours": 6,
+      "level": 1,
+      "difficulty": "foundation",
+      "cost": "free",
+      "language": "en",
+      "country": "GLOBAL",
+      "source_id": "un-sdg12",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "evidence_status": "source-backed",
+      "type": "reference and applied metric exercise",
+      "duration_note": "SHIFT//OS planning estimate including practice; not a provider-certified duration.",
+      "cost_note": "Learning content is free to access; product licences, exams or optional services may cost extra."
+    }
+  ],
+  "employer_roles": [
+    {
+      "id": "demo-admin-assistant-graduate",
+      "employer_id": "demo-employer-1",
+      "employer_name": "Example Office Lab (fictional)",
+      "title": "Graduate Administrative Assistant",
+      "occupation_id": "admin-assistant",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "excel",
+          "required_level": 2,
+          "weight": 3
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 1,
+          "weight": 1
+        },
+        {
+          "skill_id": "automation",
+          "required_level": 2,
+          "weight": 2
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-customer-support-graduate",
+      "employer_id": "demo-employer-2",
+      "employer_name": "Example Service Lab (fictional)",
+      "title": "Graduate Customer Support Specialist",
+      "occupation_id": "customer-support",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "automation",
+          "required_level": 1,
+          "weight": 1
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-data-analyst-graduate",
+      "employer_id": "demo-employer-3",
+      "employer_name": "Example Analytics Lab (fictional)",
+      "title": "Graduate Data Analyst",
+      "occupation_id": "data-analyst",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "sql",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "python",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-business-analyst-graduate",
+      "employer_id": "demo-employer-4",
+      "employer_name": "Example Consulting Lab (fictional)",
+      "title": "Graduate Business Analyst",
+      "occupation_id": "business-analyst",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "business-analysis",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 1
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-bi-analyst-graduate",
+      "employer_id": "demo-employer-5",
+      "employer_name": "Example Insights Lab (fictional)",
+      "title": "Graduate Business Intelligence Analyst",
+      "occupation_id": "bi-analyst",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "sql",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "power-bi",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 2
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-operations-analyst-graduate",
+      "employer_id": "demo-employer-6",
+      "employer_name": "Example Operations Lab (fictional)",
+      "title": "Graduate Operations Analyst",
+      "occupation_id": "operations-analyst",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-ai-automation-graduate",
+      "employer_id": "demo-employer-7",
+      "employer_name": "Example Automation Lab (fictional)",
+      "title": "Graduate AI Automation Specialist",
+      "occupation_id": "ai-automation",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "automation",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "python",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "business-analysis",
+          "required_level": 3,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 2,
+          "weight": 1
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-sustainability-analyst-graduate",
+      "employer_id": "demo-employer-8",
+      "employer_name": "Example Sustainability Lab (fictional)",
+      "title": "Graduate Sustainability Data Analyst",
+      "occupation_id": "sustainability-analyst",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "sustainability",
+          "required_level": 3,
+          "weight": 4
+        },
+        {
+          "skill_id": "excel",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "sql",
+          "required_level": 2,
+          "weight": 2
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 0,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    },
+    {
+      "id": "demo-data-analyst-experienced",
+      "employer_id": "demo-employer-3",
+      "employer_name": "Example Analytics Lab (fictional)",
+      "title": "Data Analyst",
+      "occupation_id": "data-analyst",
+      "country": "MY",
+      "location": "Kuala Lumpur (illustrative)",
+      "requirements": [
+        {
+          "skill_id": "sql",
+          "required_level": 4,
+          "weight": 4
+        },
+        {
+          "skill_id": "python",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "statistics",
+          "required_level": 3,
+          "weight": 3
+        },
+        {
+          "skill_id": "communication",
+          "required_level": 3,
+          "weight": 2
+        }
+      ],
+      "education": "Relevant diploma, degree or equivalent portfolio; manual review required",
+      "experience_years": 2,
+      "work_authorization": "Must independently confirm eligibility to work in Malaysia",
+      "vacancy_status": "not a vacancy",
+      "source_url": null,
+      "source_id": "shiftos-synthetic",
+      "source_status": "synthetic demonstration",
+      "evidence_status": "synthetic demonstration",
+      "verified_at": "2026-10-21",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fictional role requirements for demonstration. No employer relationship or available vacancy is implied."
+    }
+  ],
+  "market_signals": [
+    {
+      "id": "demo-data-analyst-09",
+      "occupation_id": "data-analyst",
+      "country": "MY",
+      "date": "2026-09-01",
+      "value": 100,
+      "metric": "synthetic fixture index",
+      "unit": "illustrative index points",
+      "source_id": "shiftos-synthetic",
+      "evidence_status": "synthetic demonstration",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fabricated test observations. Excluded from career scoring and market outlook."
+    },
+    {
+      "id": "demo-data-analyst-10",
+      "occupation_id": "data-analyst",
+      "country": "MY",
+      "date": "2026-10-01",
+      "value": 105,
+      "metric": "synthetic fixture index",
+      "unit": "illustrative index points",
+      "source_id": "shiftos-synthetic",
+      "evidence_status": "synthetic demonstration",
+      "dataset_version": "my-demo-2026.10.21-v1",
+      "notes": "Fabricated test observations. Excluded from career scoring and market outlook."
+    }
+  ],
+  "scenarios": [
+    {
+      "id": "moderate",
+      "name": "Moderate AI adoption",
+      "adaptation_weight": 0.1,
+      "learning_multiplier": 1,
+      "exposure_multiplier": 1,
+      "priority_multipliers": {
+        "automation": 1,
+        "python": 1,
+        "communication": 1,
+        "statistics": 1
+      },
+      "assumptions": [
+        "Gradual adoption; existing occupational requirements remain the planning baseline.",
+        "Technical exposure is distinct from observed adoption and job displacement."
+      ],
+      "evidence_status": "curated illustrative"
+    },
+    {
+      "id": "accelerated",
+      "name": "Accelerated AI adoption",
+      "adaptation_weight": 0.25,
+      "learning_multiplier": 1.15,
+      "exposure_multiplier": 1,
+      "priority_multipliers": {
+        "automation": 1.6,
+        "python": 1.25,
+        "communication": 1.15,
+        "statistics": 1.2
+      },
+      "assumptions": [
+        "Faster adoption increases priority for workflow oversight, analytical validation and human review.",
+        "Planning multipliers are hypothetical team-authored assumptions, not forecasts."
+      ],
+      "evidence_status": "curated illustrative"
+    }
+  ],
+  "sdg_mappings": [
+    {
+      "id": "admin-assistant-sdg4",
+      "occupation_id": "admin-assistant",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "customer-support-sdg4",
+      "occupation_id": "customer-support",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "data-analyst-sdg4",
+      "occupation_id": "data-analyst",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "business-analyst-sdg4",
+      "occupation_id": "business-analyst",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "bi-analyst-sdg4",
+      "occupation_id": "bi-analyst",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "operations-analyst-sdg4",
+      "occupation_id": "operations-analyst",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "ai-automation-sdg4",
+      "occupation_id": "ai-automation",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "sustainability-analyst-sdg4",
+      "occupation_id": "sustainability-analyst",
+      "goal": 4,
+      "target": "4.4",
+      "name": "Quality Education",
+      "explanation": "Optional assessments and practical learning milestones support relevant technical and vocational skill development.",
+      "source_id": "un-sdg4",
+      "source_url": "https://sdgs.un.org/goals/goal4",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "ai-automation-sdg8",
+      "occupation_id": "ai-automation",
+      "goal": 8,
+      "target": "8.2",
+      "name": "Decent Work and Economic Growth",
+      "explanation": "A supervised automation portfolio demonstrates technological process improvements while retaining accountable human decisions.",
+      "source_id": "un-sdg8",
+      "source_url": "https://sdgs.un.org/goals/goal8",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "sustainability-analyst-sdg12",
+      "occupation_id": "sustainability-analyst",
+      "goal": 12,
+      "target": "12.6",
+      "name": "Responsible Consumption and Production",
+      "explanation": "Traceable resource-use metrics and sustainability dashboards support transparent organisational reporting; impact is not quantified.",
+      "source_id": "un-sdg12",
+      "source_url": "https://sdgs.un.org/goals/goal12",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.21-v1"
+    }
+  ],
+  "dataset_versions": [
+    {
+      "id": "my-demo-2026.10.21-v1",
+      "name": "Malaysia demonstration catalogue",
+      "created_at": "2026-10-21",
+      "evidence_status": "curated illustrative",
+      "notes": "Official learning links and SDG references; illustrative occupational assumptions and fictional employer fixtures."
+    }
+  ]
+}
