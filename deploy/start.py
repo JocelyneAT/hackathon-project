@@ -4,15 +4,14 @@ from __future__ import annotations
 
 import json
 import os
-from pathlib import Path
 import signal
 import subprocess
 import sys
 import threading
 import time
+from pathlib import Path
 from urllib.error import HTTPError, URLError
 from urllib.request import urlopen
-
 
 APP_ROOT = Path(__file__).resolve().parents[1]
 BACKEND_PORT = 8000

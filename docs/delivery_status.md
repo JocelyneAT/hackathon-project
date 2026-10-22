@@ -2,6 +2,8 @@
 
 Verified locally on 22 October 2026. The production frontend is served at http://127.0.0.1:3000 and the API at http://127.0.0.1:8000 while the local server processes remain running. Restart instructions are in the root README.
 
+Hosted on Render at <https://hackathon-project-xewk.onrender.com>. The Linux container built and started successfully; all nine browser tests passed on the hosted site. See [hosting details](hosting.md) for the private repository, free service behavior and deployment notes.
+
 ## Implemented
 
 - Next.js, React, TypeScript and Tailwind frontend with four connected planning stages and a separate read-only System data workspace. The current interface uses plain English, numbers and small tables without charts.
@@ -21,14 +23,14 @@ Verified locally on 22 October 2026. The production frontend is served at http:/
 - Skill checks assess narrow foundational knowledge and establish provisional Levels 1–2. They do not verify practical workplace proficiency or advanced expertise.
 - Learning effort and career weights are transparent planning heuristics. Resource difficulty is not individually calibrated; work-arrangement preference is collected but does not currently filter synthetic roles.
 - SQLAlchemy and the PostgreSQL driver provide a configuration path. Only SQLite was exercised.
-- Docker source paths and Compose configuration were inspected. Docker was unavailable, so images and container startup were not executed.
+- The combined deployment container was built and started by Render. Local Docker and the separate Compose deployment were not exercised.
 
 ## Missing
 
 - Reviewed local labour-market observations, real employer vacancies and validated recommendation outcomes.
 - Local datasets for the other ten countries, multilingual content and cross-border eligibility analysis.
 - OCR, secure practical code execution, human evidence review and externally validated assessment instruments.
-- Hosted deployment, authentication, durable user evidence, production rate limits, database migrations and cross-device profile storage.
+- Authentication, durable user evidence, production rate limits, database migrations and cross-device profile storage.
 
 ## Evidence limitations
 

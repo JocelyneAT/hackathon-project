@@ -4,6 +4,8 @@ Verification date: 22 October 2026. Runtime: the compiled Next.js production fro
 
 Latest rerun after the plain-English update: all nine Playwright tests passed in 25.2 seconds. Test-file formatting and TypeScript checks also passed. The 390px profile screenshot was inspected: labels were clear, with no charts, clipping or horizontal overflow. Automated checks covered the full journey at 390px and 760px.
 
+Hosted verification: all nine tests also passed against `https://hackathon-project-xewk.onrender.com` in 36.0 seconds on 22 October 2026. The live website and proxied API returned HTTP 200. The browser title and page description were subsequently simplified; application controls and calculation behavior were unchanged.
+
 The current UI rule is simple English, direct instructions and no complex analogies or charts. The four steps are **Your profile**, **Career options**, **Learning plan** and **Job options**. Results use short text and small tables. Earlier records or technical API documentation may use terms such as "provisional level" or "pathway"; the user interface now says "Estimated level" and "career options". Backend field names and calculation meanings are unchanged.
 
 ## Executed interaction coverage

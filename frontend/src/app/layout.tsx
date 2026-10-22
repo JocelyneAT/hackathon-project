@@ -1,9 +1,9 @@
 import type { Metadata } from "next";
 import "./globals.css";
 export const metadata: Metadata = {
-  title: "SHIFT//OS | Your next chapter, mapped",
+  title: "SHIFT//OS | Plan your career",
   description:
-    "Evidence-aware career planning, learning pathways, and opportunity alignment for Malaysia.",
+    "Compare career options, check your skills, and make a learning plan in Malaysia.",
 };
 export default function RootLayout({
   children,
