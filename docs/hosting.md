@@ -8,6 +8,8 @@ The first Render deployment became live on 22 October 2026 at 14:59 in the Asia/
 
 The final plain-English browser title is live in commit `74347433e36301945a49c0dab1242a099e89bc41`, deployment `dep-dbcraiss728c73at25hg`, completed at 15:05. Its title, homepage and API were checked again successfully after deployment. The current profile form was also inspected in the browser, and the hosted mobile screenshot showed no clipping or charts.
 
+The next update simplifies the visible controls and replaces milestone choices with one complete ordered learning plan. Before deployment, its production build, all 121 backend tests, all nine browser tests, formatting, TypeScript and strict UI audit passed. The desktop and mobile roadmap screenshots were inspected. Live verification of this update is recorded after the deployment finishes.
+
 ## Earlier temporary preview
 
 The team preview uses a temporary Cloudflare Tunnel to the production frontend running on the development computer. The frontend forwards `/api/*` to the local FastAPI server. Both the website and backend must remain running, and the computer must stay connected and awake.

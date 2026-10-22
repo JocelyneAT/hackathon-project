@@ -209,14 +209,16 @@ export function Personal({
   }
   return (
     <fieldset disabled={busy} className="personal-controls">
-      <div className="content-grid">
+      <div className="content-grid simple-profile">
         <div className="stack">
           <Panel>
             <div className="section-heading">
               <span className="section-number">01</span>
               <div>
                 <h2>A little about you</h2>
-                <p>Tell us about your study, work, or projects.</p>
+                <p>
+                  Start with these two questions. You can add details later.
+                </p>
               </div>
             </div>
             <fieldset>
@@ -294,164 +296,168 @@ export function Personal({
                 </select>
               </Field>
             )}
-            <div className="form-grid">
-              <Field label="Country you live in" htmlFor="residence">
-                <select
-                  id="residence"
-                  value={profile.country}
-                  onChange={(e) => update({ country: e.target.value })}
-                >
-                  {countries.map(([code, name]) => (
-                    <option key={code} value={code}>
-                      {name}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-              <Field
-                label="Country you want to work in"
-                htmlFor="country"
-                hint="This demo currently has example data for Malaysia only."
-              >
-                <select
-                  id="country"
-                  value={profile.employment_country}
-                  onChange={(e) =>
-                    update({ employment_country: e.target.value })
-                  }
-                >
-                  {countries.map(([code, name]) => (
-                    <option key={code} value={code}>
-                      {name}
-                      {code !== "MY" ? " · not available yet" : ""}
-                    </option>
-                  ))}
-                </select>
-              </Field>
-            </div>
-            {profile.employment_country !== "MY" && (
-              <Note title="This country is not available yet">
-                We do not have job and employer data for this country yet.
-                Choose Malaysia to try the demo. We will not use Malaysian data
-                for another country.
-              </Note>
-            )}
-            <Field
-              label="Education or training"
-              htmlFor="education"
-              hint="Optional. Include school, university, skills training, or courses you took yourself."
-            >
-              <input
-                id="education"
-                value={profile.education}
-                onChange={(e) => update({ education: e.target.value })}
-                placeholder="e.g. Diploma in Business Administration"
-                maxLength={500}
-              />
-            </Field>
-            {profile.career_stage === "professional" && (
+            <p className="hint">This demo uses Malaysian job examples.</p>
+            <details className="optional-details">
+              <summary>Add work, study or location details (optional)</summary>
               <div className="form-grid">
-                <Field label="Current job" htmlFor="current-role">
+                <Field label="Country you live in" htmlFor="residence">
                   <select
-                    id="current-role"
-                    value={profile.current_occupation_id || ""}
-                    onChange={(e) =>
-                      update({
-                        current_occupation_id: e.target.value,
-                        task_ids: [],
-                      })
-                    }
+                    id="residence"
+                    value={profile.country}
+                    onChange={(e) => update({ country: e.target.value })}
                   >
-                    <option value="">Choose your current job</option>
-                    {occupations.map((o) => (
-                      <option key={o.id} value={o.id}>
-                        {o.title}
+                    {countries.map(([code, name]) => (
+                      <option key={code} value={code}>
+                        {name}
                       </option>
                     ))}
                   </select>
                 </Field>
-                <Field label="Years of work experience" htmlFor="experience">
-                  <input
-                    id="experience"
-                    type="number"
-                    min="0"
-                    max="60"
-                    value={profile.experience_years}
+                <Field
+                  label="Country you want to work in"
+                  htmlFor="country"
+                  hint="This demo currently has example data for Malaysia only."
+                >
+                  <select
+                    id="country"
+                    value={profile.employment_country}
                     onChange={(e) =>
-                      update({ experience_years: Number(e.target.value) })
+                      update({ employment_country: e.target.value })
                     }
-                  />
+                  >
+                    {countries.map(([code, name]) => (
+                      <option key={code} value={code}>
+                        {name}
+                        {code !== "MY" ? " · not available yet" : ""}
+                      </option>
+                    ))}
+                  </select>
                 </Field>
               </div>
-            )}
-            <Field
-              label={
-                profile.career_stage === "starter"
-                  ? "What have you worked on?"
-                  : "What do you do at work?"
-              }
-              htmlFor="background"
-              hint="Optional. Projects, volunteering, internships, and everyday work all count."
-            >
-              <textarea
-                className="resize-none"
-                id="background"
-                value={profile.background}
-                onChange={(e) => update({ background: e.target.value })}
-                placeholder={
-                  profile.career_stage === "starter"
-                    ? "Tell us about a class project, a volunteer role, or something you built..."
-                    : "Describe the tasks you do and tools you use..."
-                }
-                maxLength={12000}
-              />
-            </Field>
-            <Field
-              label="A project you have worked on"
-              htmlFor="projects"
-              hint="Optional. Tell us what you did and what you made."
-            >
-              <textarea
-                className="resize-none"
-                id="projects"
-                value={profile.projects}
-                onChange={(e) => update({ projects: e.target.value })}
-                placeholder="e.g. I used Excel to track a student club's money and explain how it was spent."
-                maxLength={12000}
-              />
-            </Field>
-            {profile.career_stage === "professional" &&
-              tasks.filter(
-                (t) => t.occupation_id === profile.current_occupation_id,
-              ).length > 0 && (
-                <fieldset>
-                  <legend>Tasks you do at work</legend>
-                  <p className="hint">
-                    Choose the tasks you do. We will show how AI could affect
-                    them.
-                  </p>
-                  {tasks
-                    .filter(
-                      (t) => t.occupation_id === profile.current_occupation_id,
-                    )
-                    .map((t) => (
-                      <label className="check-row" key={t.id}>
-                        <input
-                          type="checkbox"
-                          checked={profile.task_ids.includes(t.id)}
-                          onChange={() =>
-                            update({
-                              task_ids: profile.task_ids.includes(t.id)
-                                ? profile.task_ids.filter((id) => id !== t.id)
-                                : [...profile.task_ids, t.id],
-                            })
-                          }
-                        />
-                        <span>{t.description}</span>
-                      </label>
-                    ))}
-                </fieldset>
+              <Field
+                label="Education or training"
+                htmlFor="education"
+                hint="Optional. Include school, university, skills training, or courses you took yourself."
+              >
+                <input
+                  id="education"
+                  value={profile.education}
+                  onChange={(e) => update({ education: e.target.value })}
+                  placeholder="e.g. Diploma in Business Administration"
+                  maxLength={500}
+                />
+              </Field>
+              {profile.career_stage === "professional" && (
+                <div className="form-grid">
+                  <Field label="Current job" htmlFor="current-role">
+                    <select
+                      id="current-role"
+                      value={profile.current_occupation_id || ""}
+                      onChange={(e) =>
+                        update({
+                          current_occupation_id: e.target.value,
+                          task_ids: [],
+                        })
+                      }
+                    >
+                      <option value="">Choose your current job</option>
+                      {occupations.map((o) => (
+                        <option key={o.id} value={o.id}>
+                          {o.title}
+                        </option>
+                      ))}
+                    </select>
+                  </Field>
+                  <Field label="Years of work experience" htmlFor="experience">
+                    <input
+                      id="experience"
+                      type="number"
+                      min="0"
+                      max="60"
+                      value={profile.experience_years}
+                      onChange={(e) =>
+                        update({ experience_years: Number(e.target.value) })
+                      }
+                    />
+                  </Field>
+                </div>
               )}
+              <Field
+                label={
+                  profile.career_stage === "starter"
+                    ? "What have you worked on?"
+                    : "What do you do at work?"
+                }
+                htmlFor="background"
+                hint="Optional. Projects, volunteering, internships, and everyday work all count."
+              >
+                <textarea
+                  className="resize-none"
+                  id="background"
+                  value={profile.background}
+                  onChange={(e) => update({ background: e.target.value })}
+                  placeholder={
+                    profile.career_stage === "starter"
+                      ? "Tell us about a class project, a volunteer role, or something you built..."
+                      : "Describe the tasks you do and tools you use..."
+                  }
+                  maxLength={12000}
+                />
+              </Field>
+              <Field
+                label="A project you have worked on"
+                htmlFor="projects"
+                hint="Optional. Tell us what you did and what you made."
+              >
+                <textarea
+                  className="resize-none"
+                  id="projects"
+                  value={profile.projects}
+                  onChange={(e) => update({ projects: e.target.value })}
+                  placeholder="e.g. I used Excel to track a student club's money and explain how it was spent."
+                  maxLength={12000}
+                />
+              </Field>
+              {profile.career_stage === "professional" &&
+                tasks.filter(
+                  (t) => t.occupation_id === profile.current_occupation_id,
+                ).length > 0 && (
+                  <fieldset>
+                    <legend>Tasks you do at work</legend>
+                    <p className="hint">
+                      Choose the tasks you do. We will show how AI could affect
+                      them.
+                    </p>
+                    {tasks
+                      .filter(
+                        (t) =>
+                          t.occupation_id === profile.current_occupation_id,
+                      )
+                      .map((t) => (
+                        <label className="check-row" key={t.id}>
+                          <input
+                            type="checkbox"
+                            checked={profile.task_ids.includes(t.id)}
+                            onChange={() =>
+                              update({
+                                task_ids: profile.task_ids.includes(t.id)
+                                  ? profile.task_ids.filter((id) => id !== t.id)
+                                  : [...profile.task_ids, t.id],
+                              })
+                            }
+                          />
+                          <span>{t.description}</span>
+                        </label>
+                      ))}
+                  </fieldset>
+                )}
+            </details>
+            {profile.employment_country !== "MY" && (
+              <Note title="This country is not available yet">
+                Open the details above and choose Malaysia to try the demo. We
+                do not have job data for the other countries yet.
+              </Note>
+            )}
           </Panel>
           <Panel>
             <div className="section-heading">
@@ -462,86 +468,89 @@ export function Personal({
               </div>
               <Tag>Optional</Tag>
             </div>
-            <div className="upload">
-              <Icon name="upload" size={24} />
-              <div>
-                <strong>Upload your CV, if you have one</strong>
-                <p>
-                  PDF, DOCX, or TXT · up to 5 MB · PDFs must have selectable
-                  text
-                </p>
-                <span className="hint">We do not keep your file.</span>
+            <details className="optional-details">
+              <summary>Add skills from a CV (optional)</summary>
+              <div className="upload">
+                <Icon name="upload" size={24} />
+                <div>
+                  <strong>Upload your CV, if you have one</strong>
+                  <p>
+                    PDF, DOCX, or TXT · up to 5 MB · PDFs must have selectable
+                    text
+                  </p>
+                  <span className="hint">We do not keep your file.</span>
+                </div>
+                <label className="button upload-label">
+                  Choose file
+                  <input
+                    aria-label="Choose CV file"
+                    type="file"
+                    accept=".pdf,.docx,.txt"
+                    disabled={busy}
+                    onChange={(e) => {
+                      void upload(e.target.files?.[0]);
+                      e.target.value = "";
+                    }}
+                  />
+                </label>
               </div>
-              <label className="button upload-label">
-                Choose file
-                <input
-                  aria-label="Choose CV file"
-                  type="file"
-                  accept=".pdf,.docx,.txt"
-                  disabled={busy}
-                  onChange={(e) => {
-                    void upload(e.target.files?.[0]);
-                    e.target.value = "";
-                  }}
-                />
-              </label>
-            </div>
-            {uploadStatus && (
-              <p role="status" className="upload-status">
-                {uploadStatus}
-              </p>
-            )}
-            {extracted && (
-              <details>
-                <summary>Check what we found in your CV</summary>
-                <p className="hint">
-                  Check this information before adding it to your profile.
+              {uploadStatus && (
+                <p role="status" className="upload-status">
+                  {uploadStatus}
                 </p>
-                {Object.entries(extracted)
-                  .filter(([, lines]) => lines.length > 0)
-                  .map(([section, lines]) => (
-                    <div key={section} className="extracted-section">
-                      <h3>{section[0].toUpperCase() + section.slice(1)}</h3>
-                      <p>{lines.join(" · ")}</p>
-                      <Button
-                        small
-                        onClick={() =>
-                          update(
-                            section === "education"
-                              ? { education: lines.join("; ").slice(0, 500) }
-                              : section === "projects"
-                                ? {
-                                    projects: [
-                                      profile.projects,
-                                      lines.join("\n"),
-                                    ]
-                                      .filter(Boolean)
-                                      .join("\n")
-                                      .slice(0, 12000),
-                                  }
-                                : {
-                                    background: [
-                                      profile.background,
-                                      lines.join("\n"),
-                                    ]
-                                      .filter(Boolean)
-                                      .join("\n")
-                                      .slice(0, 12000),
-                                  },
-                          )
-                        }
-                      >
-                        Add to{" "}
-                        {section === "education"
-                          ? "education"
-                          : section === "projects"
-                            ? "projects"
-                            : "background"}
-                      </Button>
-                    </div>
-                  ))}
-              </details>
-            )}
+              )}
+              {extracted && (
+                <details>
+                  <summary>Check what we found in your CV</summary>
+                  <p className="hint">
+                    Check this information before adding it to your profile.
+                  </p>
+                  {Object.entries(extracted)
+                    .filter(([, lines]) => lines.length > 0)
+                    .map(([section, lines]) => (
+                      <div key={section} className="extracted-section">
+                        <h3>{section[0].toUpperCase() + section.slice(1)}</h3>
+                        <p>{lines.join(" · ")}</p>
+                        <Button
+                          small
+                          onClick={() =>
+                            update(
+                              section === "education"
+                                ? { education: lines.join("; ").slice(0, 500) }
+                                : section === "projects"
+                                  ? {
+                                      projects: [
+                                        profile.projects,
+                                        lines.join("\n"),
+                                      ]
+                                        .filter(Boolean)
+                                        .join("\n")
+                                        .slice(0, 12000),
+                                    }
+                                  : {
+                                      background: [
+                                        profile.background,
+                                        lines.join("\n"),
+                                      ]
+                                        .filter(Boolean)
+                                        .join("\n")
+                                        .slice(0, 12000),
+                                    },
+                            )
+                          }
+                        >
+                          Add to{" "}
+                          {section === "education"
+                            ? "education"
+                            : section === "projects"
+                              ? "projects"
+                              : "background"}
+                        </Button>
+                      </div>
+                    ))}
+                </details>
+              )}
+            </details>
             <fieldset>
               <legend>Which skills have you used or learned about?</legend>
               <div className="skill-options">
@@ -767,141 +776,146 @@ export function Personal({
                 <div>
                   <h2>Your skills</h2>
                   <p>
-                    Here is what you told us. A short check can help estimate
-                    your skill level.
+                    You can see your career options now. Checking a skill is
+                    optional and can make the results more useful.
                   </p>
                 </div>
                 <Tag tone="blue">Ready to review</Tag>
               </div>
-              {analysis.skills.length ? (
-                <div className="evidence-list">
-                  {analysis.skills.map((s) => (
-                    <div className="evidence-row" key={s.skill_id}>
-                      <div>
-                        <strong>{s.name}</strong>
-                        <p>
-                          {s.evidence.map(plainEvidence).join(" · ") ||
-                            "You told us you know this skill."}
-                        </p>
+              <details className="optional-details">
+                <summary>Review skills and take a check (optional)</summary>
+                {analysis.skills.length ? (
+                  <div className="evidence-list">
+                    {analysis.skills.map((s) => (
+                      <div className="evidence-row" key={s.skill_id}>
+                        <div>
+                          <strong>{s.name}</strong>
+                          <p>
+                            {s.evidence.map(plainEvidence).join(" · ") ||
+                              "You told us you know this skill."}
+                          </p>
+                        </div>
+                        <div>
+                          <Tag>
+                            {s.estimated_proficiency === null
+                              ? "Skill level unknown"
+                              : `Estimated level ${s.estimated_proficiency}`}
+                          </Tag>
+                          <p>
+                            Confidence: {s.confidence} ·{" "}
+                            {s.estimated_proficiency === null
+                              ? "Not checked"
+                              : "Based on a short check"}
+                          </p>
+                        </div>
                       </div>
-                      <div>
-                        <Tag>
-                          {s.estimated_proficiency === null
-                            ? "Skill level unknown"
-                            : `Estimated level ${s.estimated_proficiency}`}
-                        </Tag>
-                        <p>
-                          Confidence: {s.confidence} ·{" "}
-                          {s.estimated_proficiency === null
-                            ? "Not checked"
-                            : "Based on a short check"}
-                        </p>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              ) : (
-                <Empty>
-                  No skills added yet. We can still suggest careers using your
-                  interests and study time.
-                </Empty>
-              )}
-              {analysis.warnings.map((w, i) => (
-                <p className="hint" key={i}>
-                  {plainWarning(w)}
-                </p>
-              ))}
-              <div className="assessment-section">
-                <h3>Want to check a skill?</h3>
-                <p>
-                  Try a short check of the basics. It is optional, and you can
-                  continue without it.
-                </p>
-                <div className="skill-options">
-                  {[
-                    "sql",
-                    "python",
-                    "excel",
-                    "statistics",
-                    "business-analysis",
-                  ].map((id) => (
-                    <Button
-                      small
-                      disabled={busy}
-                      key={id}
-                      onClick={() => {
-                        void start(id);
-                      }}
-                    >
-                      Check {skills.find((s) => s.id === id)?.name || id}
-                    </Button>
-                  ))}
-                </div>
-              </div>
-              {assessment && (
-                <div className="assessment" aria-live="polite">
-                  <div className="row-between">
-                    <h3>
-                      {skills.find((s) => s.id === assessment.skill_id)?.name}{" "}
-                      skill check
-                    </h3>
-                    <Button small onClick={() => setAssessment(null)}>
-                      Close skill check
-                    </Button>
+                    ))}
                   </div>
-                  {assessment.question ? (
-                    <>
-                      <Tag>Short skill check</Tag>
-                      <h3 className="question-prompt">
-                        {assessment.question.prompt}
-                      </h3>
-                      <fieldset>
-                        <legend className="sr-only">Choose your answer</legend>
-                        {assessment.question.options.map((o) => (
-                          <label key={o.id} className="answer-option">
-                            <input
-                              type="radio"
-                              name="assessment-answer"
-                              value={o.id}
-                              checked={answer === o.id}
-                              onChange={() => setAnswer(o.id)}
-                            />
-                            <span>{o.text}</span>
-                          </label>
-                        ))}
-                      </fieldset>
+                ) : (
+                  <Empty>
+                    No skills added yet. We can still suggest careers using your
+                    interests and study time.
+                  </Empty>
+                )}
+                {analysis.warnings.map((w, i) => (
+                  <p className="hint" key={i}>
+                    {plainWarning(w)}
+                  </p>
+                ))}
+                <div className="assessment-section">
+                  <h3>Want to check a skill?</h3>
+                  <p>
+                    Try a short check of the basics. It is optional, and you can
+                    continue without it.
+                  </p>
+                  <div className="skill-options">
+                    {[
+                      "sql",
+                      "python",
+                      "excel",
+                      "statistics",
+                      "business-analysis",
+                    ].map((id) => (
                       <Button
-                        primary
-                        disabled={!answer || busy}
+                        small
+                        disabled={busy}
+                        key={id}
                         onClick={() => {
-                          void submit();
+                          void start(id);
                         }}
                       >
-                        Check answer
+                        Check {skills.find((s) => s.id === id)?.name || id}
                       </Button>
-                    </>
-                  ) : (
-                    <>
-                      <h3>Skill check complete</h3>
-                      <p>
-                        You answered {assessment.result?.correct_count} of{" "}
-                        {assessment.result?.questions_attempted} questions
-                        correctly.
-                      </p>
-                      <p>
-                        {assessment.result?.estimated_proficiency === null
-                          ? "We do not have enough information to estimate your level yet."
-                          : `Estimated level ${assessment.result?.estimated_proficiency}`}{" "}
-                        · {assessment.result?.confidence} confidence
-                      </p>
-                      <p className="hint">
-                        This result only covers the basics in these questions.
-                        It does not prove that you are ready for a job.
-                      </p>
-                    </>
-                  )}
+                    ))}
+                  </div>
                 </div>
-              )}
+                {assessment && (
+                  <div className="assessment" aria-live="polite">
+                    <div className="row-between">
+                      <h3>
+                        {skills.find((s) => s.id === assessment.skill_id)?.name}{" "}
+                        skill check
+                      </h3>
+                      <Button small onClick={() => setAssessment(null)}>
+                        Close skill check
+                      </Button>
+                    </div>
+                    {assessment.question ? (
+                      <>
+                        <Tag>Short skill check</Tag>
+                        <h3 className="question-prompt">
+                          {assessment.question.prompt}
+                        </h3>
+                        <fieldset>
+                          <legend className="sr-only">
+                            Choose your answer
+                          </legend>
+                          {assessment.question.options.map((o) => (
+                            <label key={o.id} className="answer-option">
+                              <input
+                                type="radio"
+                                name="assessment-answer"
+                                value={o.id}
+                                checked={answer === o.id}
+                                onChange={() => setAnswer(o.id)}
+                              />
+                              <span>{o.text}</span>
+                            </label>
+                          ))}
+                        </fieldset>
+                        <Button
+                          primary
+                          disabled={!answer || busy}
+                          onClick={() => {
+                            void submit();
+                          }}
+                        >
+                          Check answer
+                        </Button>
+                      </>
+                    ) : (
+                      <>
+                        <h3>Skill check complete</h3>
+                        <p>
+                          You answered {assessment.result?.correct_count} of{" "}
+                          {assessment.result?.questions_attempted} questions
+                          correctly.
+                        </p>
+                        <p>
+                          {assessment.result?.estimated_proficiency === null
+                            ? "We do not have enough information to estimate your level yet."
+                            : `Estimated level ${assessment.result?.estimated_proficiency}`}{" "}
+                          · {assessment.result?.confidence} confidence
+                        </p>
+                        <p className="hint">
+                          This result only covers the basics in these questions.
+                          It does not prove that you are ready for a job.
+                        </p>
+                      </>
+                    )}
+                  </div>
+                )}
+              </details>
               <div className="panel-action">
                 <p className="hint">You can do these checks later.</p>
                 <Button primary disabled={busy} onClick={onContinue}>
@@ -912,52 +926,6 @@ export function Personal({
             </Panel>
           )}
         </div>
-        <aside className="context-rail">
-          <Panel className="rail-intro">
-            <span className="rail-index">FOUR SIMPLE STEPS</span>
-            <h2>What happens next</h2>
-            <p>
-              Start with your experience. Then choose a job and make a learning
-              plan.
-            </p>
-            <div className="path-preview">
-              <div>
-                <span>1</span>
-                <p>Tell us about yourself</p>
-              </div>
-              <div>
-                <span>2</span>
-                <p>See career options and AI changes</p>
-              </div>
-              <div>
-                <span>3</span>
-                <p>Choose what to learn</p>
-              </div>
-              <div>
-                <span>4</span>
-                <p>See example jobs and employers</p>
-              </div>
-            </div>
-          </Panel>
-          <div className="rail-note">
-            <Icon name="info" />
-            <div>
-              <strong>It is fine if you are not sure yet.</strong>
-              <p>
-                Tell us what you can. You do not need a CV or work experience.
-                The skill checks are optional.
-              </p>
-            </div>
-          </div>
-          <div className="rail-foot">
-            <span>We will be clear about what we know.</span>
-            <p>
-              Listing a skill in your CV does not show your skill level.
-              Finishing a course does not prove that you can use the skill at
-              work.
-            </p>
-          </div>
-        </aside>
       </div>
     </fieldset>
   );

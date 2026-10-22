@@ -1,5 +1,6 @@
 import { expect, test, type Page } from "@playwright/test";
 import { resolve } from "node:path";
+import type { Roadmap } from "../src/lib/types";
 
 const screenshot = (name: string) =>
   resolve(process.cwd(), "../.local/screenshots", name);
@@ -37,6 +38,61 @@ async function continueToCareers(page: Page) {
   await expectNoCharts(page);
 }
 
+async function openDetails(page: Page, label: string) {
+  const summary = page.locator("summary").filter({ hasText: label });
+  const details = summary.locator("..");
+  if ((await details.getAttribute("open")) === null) await summary.click();
+  await expect(details).toHaveAttribute("open", "");
+}
+
+async function expectFixedRoadmap(page: Page, roadmap: Roadmap) {
+  await expect(
+    page.getByRole("checkbox", { name: "Include in my plan" }),
+  ).toHaveCount(0);
+  await expect(page.locator(".milestone h2")).toHaveText([
+    ...roadmap.milestones.map(
+      (milestone, index) => `Step ${index + 1}: Learn ${milestone.skill_name}`,
+    ),
+    `Step ${roadmap.milestones.length + 1}: Make your final project`,
+  ]);
+  await expect(page.locator(".milestone-index")).toHaveText(
+    Array.from({ length: roadmap.milestones.length + 1 }, (_, index) =>
+      String(index + 1),
+    ),
+  );
+  await expect(page.locator(".start-step")).toHaveCount(1);
+  await expect(page.locator(".start-step")).toBeVisible();
+  await expect(page.locator(".start-step")).toContainText("Start here");
+  await expect(page.locator(".final-project")).toContainText(
+    roadmap.portfolio_project,
+  );
+  for (const [index, milestone] of roadmap.milestones.entries()) {
+    const step = page.locator(".milestone:not(.final-project)").nth(index);
+    await expect(step).toContainText(milestone.exercise);
+    await expect(step).toContainText(milestone.verification);
+    await expect(step.locator(".resource")).toHaveCount(
+      milestone.resources.length,
+    );
+    await expect(step.locator(".resource:visible")).toHaveCount(
+      Math.min(milestone.resources.length, 1),
+    );
+    if (milestone.resources[0]) {
+      await expect(step.locator(".resource:visible")).toContainText(
+        milestone.resources[0].title,
+      );
+      await expect(step.locator(".resource:visible")).toHaveAttribute(
+        "href",
+        milestone.resources[0].url,
+      );
+    } else {
+      await expect(step).toContainText("Use the practice task below");
+    }
+  }
+  await expect(
+    page.getByRole("button", { name: "See job options", exact: true }),
+  ).toBeEnabled();
+}
+
 async function expectNoCharts(page: Page) {
   await expect(
     page.locator('.recharts-wrapper, .chart, [role="meter"]'),
@@ -53,7 +109,7 @@ async function expectNoPageOverflow(page: Page) {
   ).toBeLessThanOrEqual(1);
 }
 
-test("target career, adaptive SQL evidence, scenarios, learning, simulation and selected employer projection", async ({
+test("target career, adaptive SQL evidence, scenarios, sequential learning and whole-plan employer projection", async ({
   page,
 }) => {
   const errors: string[] = [];
@@ -64,6 +120,10 @@ test("target career, adaptive SQL evidence, scenarios, learning, simulation and 
     fullPage: false,
   });
   await demoProfile(page, "target");
+  await expect(
+    page.getByRole("button", { name: "Check SQL", exact: true }),
+  ).toBeHidden();
+  await openDetails(page, "Review skills and take a check (optional)");
   await page.getByRole("button", { name: "Check SQL", exact: true }).click();
   // These authored question answers exercise real grading and the correct-answer adaptive branch.
   for (const answer of ["WHERE", "50", "1"]) {
@@ -87,6 +147,10 @@ test("target career, adaptive SQL evidence, scenarios, learning, simulation and 
     page.getByRole("row").filter({ hasText: "SQL" }).first(),
   ).toContainText("Estimated");
 
+  await expect(
+    page.getByRole("button", { name: "Faster change", exact: true }),
+  ).toBeHidden();
+  await openDetails(page, "AI changes and other details");
   const scenarioResponse = page.waitForResponse(
     (r) =>
       r.url().endsWith("/scenarios/compare") &&
@@ -117,12 +181,16 @@ test("target career, adaptive SQL evidence, scenarios, learning, simulation and 
     r.url().endsWith("/roadmaps/generate"),
   );
   await page.getByRole("button", { name: "Make my learning plan" }).click();
-  const roadmap = await (await roadmapResponse).json();
-  await expect(page.locator(".milestone")).toHaveCount(
-    roadmap.milestones.length,
-  );
+  const roadmap: Roadmap = await (await roadmapResponse).json();
+  await expectFixedRoadmap(page, roadmap);
   await expectNoCharts(page);
   expect(roadmap.total_hours).toBeGreaterThan(0);
+  await page.screenshot({
+    path: screenshot("learning-desktop.png"),
+    fullPage: true,
+  });
+  await expect(page.getByLabel("Skill to learn")).toBeHidden();
+  await openDetails(page, "Optional: explore one skill");
   await page.getByLabel("Skill to learn").selectOption("sql");
   await page.getByLabel("Level you plan to reach").selectOption("3");
   const simulationResponse = page.waitForResponse((r) =>
@@ -140,21 +208,18 @@ test("target career, adaptive SQL evidence, scenarios, learning, simulation and 
     page.getByRole("columnheader", { name: "After learning", exact: true }),
   ).toBeVisible();
 
-  await page
-    .getByRole("checkbox", { name: "Include in my plan" })
-    .first()
-    .uncheck();
+  await expectFixedRoadmap(page, roadmap);
   const employerResponse = page.waitForResponse((r) =>
     r.url().endsWith("/employers/match"),
   );
   await page.getByRole("button", { name: "See job options" }).click();
   const employersResponse = await employerResponse;
   const employers = await employersResponse.json();
-  expect(employersResponse.request().postDataJSON().milestone_ids).toHaveLength(
-    roadmap.milestones.length - 1,
+  expect(employersResponse.request().postDataJSON().milestone_ids).toEqual(
+    roadmap.milestones.map((milestone) => milestone.id),
   );
-  expect(employers.projected_skill_ids).not.toContain(
-    roadmap.milestones[0].skill_id,
+  expect(employers.projected_skill_ids).toEqual(
+    roadmap.milestones.map((milestone) => milestone.skill_id),
   );
   expect(
     employers.roles.some(
@@ -182,6 +247,7 @@ test("target career, adaptive SQL evidence, scenarios, learning, simulation and 
     "Recent computing graduate",
   );
   await expect(page.getByLabel("The job you want")).toHaveValue("data-analyst");
+  await openDetails(page, "Review skills and take a check (optional)");
   await expect(page.locator(".evidence-list")).toContainText(
     "Estimated level 2",
   );
@@ -192,6 +258,15 @@ test("career starter can answer interests and finish without CV, experience or a
   page,
 }) => {
   await openWorkspace(page);
+  await expect(page.getByLabel("Education or training")).toBeHidden();
+  await expect(page.getByLabel("Choose CV file")).toBeHidden();
+  for (const step of ["Career options", "Learning plan", "Job options"]) {
+    await expect(
+      page
+        .getByRole("navigation", { name: "Career planning steps" })
+        .getByRole("button", { name: new RegExp(step) }),
+    ).toBeDisabled();
+  }
   await page
     .getByRole("button", { name: "Answer four questions about your interests" })
     .click();
@@ -207,6 +282,7 @@ test("career starter can answer interests and finish without CV, experience or a
   await page
     .getByRole("button", { name: "Review my skills", exact: true })
     .click();
+  await openDetails(page, "Review skills and take a check (optional)");
   await expect(
     page.getByText("No skills added yet.", { exact: false }),
   ).toBeVisible();
@@ -231,6 +307,7 @@ test("professional current responsibilities remain separate from the target care
     .getByRole("button", { name: "I know the job I want", exact: true })
     .click();
   await page.getByLabel("The job you want").selectOption("data-analyst");
+  await openDetails(page, "Add work, study or location details (optional)");
   await page
     .getByLabel("Current job", { exact: true })
     .selectOption("admin-assistant");
@@ -252,6 +329,7 @@ test("professional current responsibilities remain separate from the target care
   await expect(page.locator(".career-detail .role-title")).toHaveText(
     "Data Analyst",
   );
+  await openDetails(page, "AI changes and other details");
   await expect(
     page.getByText("Tasks for: Administrative Assistant"),
   ).toBeVisible();
@@ -261,6 +339,7 @@ test("country and hours validation, TXT review, and unsupported extraction recov
   page,
 }) => {
   await openWorkspace(page);
+  await openDetails(page, "Add work, study or location details (optional)");
   await page.getByLabel("Country you want to work in").selectOption("SG");
   await expect(
     page.getByText("This country is not available yet", { exact: true }),
@@ -284,6 +363,7 @@ test("country and hours validation, TXT review, and unsupported extraction recov
   await page
     .getByRole("button", { name: "Close message", exact: true })
     .click();
+  await openDetails(page, "Add skills from a CV (optional)");
   const file = page.getByLabel("Choose CV file");
   await file.setInputFiles({
     name: "sample.txt",
@@ -405,6 +485,7 @@ test("backend failure can reconnect, loading disables edits, and keyboard skip l
     await route.continue();
   });
   await page.getByLabel("Load example profile").selectOption("starter");
+  await openDetails(page, "Add work, study or location details (optional)");
   await page
     .getByRole("button", { name: "Review my skills", exact: true })
     .click();
@@ -423,6 +504,7 @@ test("remaining controls preserve choices, print safely, and respect black text 
 }) => {
   await page.emulateMedia({ reducedMotion: "reduce" });
   await openWorkspace(page);
+  await openDetails(page, "Add work, study or location details (optional)");
 
   async function expectVisibleTextBlack() {
     const violations = await page.locator(".app-shell").evaluate((root) => {
@@ -574,6 +656,7 @@ test("remaining controls preserve choices, print safely, and respect black text 
     page.getByRole("heading", { name: "Your skills", exact: true }),
   ).toBeVisible();
   await page.unroute("**/api/v1/profiles/analyze");
+  await openDetails(page, "Review skills and take a check (optional)");
   for (const name of [
     "SQL",
     "Python",
@@ -592,14 +675,15 @@ test("remaining controls preserve choices, print safely, and respect black text 
   }
 
   await continueToCareers(page);
+  const roadmapResponse = page.waitForResponse((response) =>
+    response.url().endsWith("/roadmaps/generate"),
+  );
   await page.getByRole("button", { name: "Make my learning plan" }).click();
+  const baselineRoadmap: Roadmap = await (await roadmapResponse).json();
+  await expectFixedRoadmap(page, baselineRoadmap);
   const baselineDuration = await page
     .locator(".roadmap-overview .duration")
     .innerText();
-  await page
-    .getByRole("checkbox", { name: "Include in my plan" })
-    .first()
-    .uncheck();
   await page
     .getByRole("navigation", { name: "Career planning steps" })
     .getByRole("button", { name: /Career options/ })
@@ -607,6 +691,7 @@ test("remaining controls preserve choices, print safely, and respect black text 
   await expect(page.locator(".career-detail .role-title")).toHaveText(
     "Data Analyst",
   );
+  await openDetails(page, "AI changes and other details");
   await page.route("**/api/v1/careers/recommend", (route) =>
     route.abort("failed"),
   );
@@ -650,9 +735,7 @@ test("remaining controls preserve choices, print safely, and respect black text 
     baselineDuration,
     { useInnerText: true },
   );
-  await expect(
-    page.getByRole("checkbox", { name: "Include in my plan" }).first(),
-  ).not.toBeChecked();
+  await expectFixedRoadmap(page, baselineRoadmap);
   await page
     .getByRole("navigation", { name: "Career planning steps" })
     .getByRole("button", { name: /Career options/ })
@@ -660,6 +743,7 @@ test("remaining controls preserve choices, print safely, and respect black text 
   await expect(page.locator(".career-detail .role-title")).toHaveText(
     "Data Analyst",
   );
+  await openDetails(page, "AI changes and other details");
   await page
     .getByRole("button", { name: "Faster change", exact: true })
     .click();
@@ -689,12 +773,12 @@ test("remaining controls preserve choices, print safely, and respect black text 
   await expect(page.getByText("Score method:", { exact: false })).toBeVisible();
   await expectVisibleTextBlack();
 
+  const updatedRoadmapResponse = page.waitForResponse((response) =>
+    response.url().endsWith("/roadmaps/generate"),
+  );
   await page.getByRole("button", { name: "Make my learning plan" }).click();
-  const milestone = page
-    .getByRole("checkbox", { name: "Include in my plan" })
-    .first();
-  await milestone.uncheck();
-  await expect(milestone).not.toBeChecked();
+  const updatedRoadmap: Roadmap = await (await updatedRoadmapResponse).json();
+  await expectFixedRoadmap(page, updatedRoadmap);
   await expectVisibleTextBlack();
   await page.getByRole("button", { name: "See job options" }).click();
   await expect(
@@ -718,9 +802,7 @@ test("remaining controls preserve choices, print safely, and respect black text 
     .getByRole("navigation", { name: "Career planning steps" })
     .getByRole("button", { name: /Learning plan/ })
     .click();
-  await expect(
-    page.getByRole("checkbox", { name: "Include in my plan" }).first(),
-  ).not.toBeChecked();
+  await expectFixedRoadmap(page, updatedRoadmap);
 
   await page.getByRole("button", { name: "System data", exact: true }).click();
   await page.getByRole("button", { name: "Datasets", exact: true }).click();
@@ -765,6 +847,11 @@ for (const width of [390, 760]) {
     await page.getByRole("button", { name: "Make my learning plan" }).click();
     await expect(page.locator(".milestone").first()).toBeVisible();
     await expectNoPageOverflow(page);
+    if (width === 390)
+      await page.screenshot({
+        path: screenshot("learning-mobile.png"),
+        fullPage: true,
+      });
     await page.getByRole("button", { name: "See job options" }).click();
     await expect(
       page.getByRole("heading", { name: "Your career plan" }),

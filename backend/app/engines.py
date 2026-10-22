@@ -38,6 +38,62 @@ LEVEL_NAMES = {
     4: "Complex application",
     5: "Advanced expertise",
 }
+PRACTICE_GUIDANCE = {
+    "sql": (
+        "Use two related sample tables. Write one query to filter rows, one to join the tables, "
+        "and one to calculate totals by group.",
+        "Save the three queries and their results. Check the results against the sample rows "
+        "and explain what each query does.",
+    ),
+    "excel": (
+        "Make a sample sales sheet with 20 rows. Fix missing or duplicate values, calculate "
+        "totals with formulas, and make a pivot table comparing sales by category.",
+        "Save the workbook with the original and cleaned data. Check the formulas and pivot "
+        "table against a manual total.",
+    ),
+    "python": (
+        "Create a list of sample sales records. Write a function and a loop that calculate "
+        "totals by category and print the results.",
+        "Save the code and its output. Test it with an empty list and one extra record, "
+        "then check that both results are correct.",
+    ),
+    "statistics": (
+        "Use a sample of 20 numbers split into two groups. Calculate each group's mean, "
+        "median, and range. Write three sentences comparing the groups and one limitation.",
+        "Keep the numbers and calculations. Check the results by hand and explain why "
+        "this small sample cannot describe everyone.",
+    ),
+    "communication": (
+        "Use results from a sample sales table. Write a five-sentence update with the main "
+        "finding, one limitation, and one action. Present the update aloud in two minutes.",
+        "Keep the written update or a recording. Ask someone to identify your main finding "
+        "and next action, then revise anything unclear.",
+    ),
+    "business-analysis": (
+        "Write a short request for a sample order-tracking tool. Name its users, list five "
+        "things they need it to do, and write three acceptance checks.",
+        "Save the request and checks. Walk through one sample order and show how each "
+        "check would confirm that the tool works as requested.",
+    ),
+    "automation": (
+        "Build a manually triggered flow that adds a sample request to a table and sends "
+        "a confirmation. Test it with complete information and with a required value missing.",
+        "Keep the flow steps and both test results. Confirm that a valid request is saved "
+        "once and that missing information receives a clear response.",
+    ),
+    "power-bi": (
+        "Load a small sample sales CSV into Power BI and clean a column. Make a one-page "
+        "report with a total-sales measure, a category table, and a filter.",
+        "Save the report. Match its total to the CSV, apply the filter, and explain "
+        "how the filtered total changes.",
+    ),
+    "sustainability": (
+        "Make a table of sample monthly waste amounts and activity totals. Calculate waste "
+        "per unit of activity, compare two months, and propose one way to reduce waste.",
+        "Keep the table, units, and calculations. Check one result by hand and label the "
+        "figures as practice data rather than an organisation's measured results.",
+    ),
+}
 
 
 def catalog() -> dict[str, Any]:
@@ -417,6 +473,14 @@ def roadmap(request: IntelligenceRequest) -> dict:
             continue
         sid = row["skill_id"]
         skill = skill_lookup[sid]
+        exercise, verification = PRACTICE_GUIDANCE.get(
+            sid,
+            (
+                f"Create a documented practical example using {row['name']} and explain your decisions.",
+                "Keep your work and explain how you checked it. Completing this practice task "
+                "does not establish verified proficiency.",
+            ),
+        )
         current = row["provisional_level"]
         assumed = 1 if current is None else current
         effort = learning_effort(row, skill, config)
@@ -448,11 +512,8 @@ def roadmap(request: IntelligenceRequest) -> dict:
                 "weeks": math.ceil(effort / request.profile.weekly_hours),
                 "prerequisites": skill.get("prerequisites", []),
                 "resources": resources,
-                "exercise": skill.get(
-                    "exercise",
-                    f"Create a documented practical example using {row['name']} and explain your decisions.",
-                ),
-                "verification": "Submit evidence or take an available assessment. Course completion alone does not verify proficiency.",
+                "exercise": skill.get("exercise", exercise),
+                "verification": skill.get("verification", verification),
                 "priority": round(priority, 3),
             }
         )

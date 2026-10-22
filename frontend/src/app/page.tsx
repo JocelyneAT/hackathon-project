@@ -38,7 +38,7 @@ const stages = [
   },
   {
     title: "Learning plan",
-    sub: "Choose what to learn",
+    sub: "Follow your steps in order",
     icon: "roadmap",
   },
   {
@@ -62,9 +62,9 @@ const headings = [
   },
   {
     kicker: "Step 3 of 4",
-    title: "Build your learning plan.",
+    title: "Your step-by-step learning plan.",
     description:
-      "Choose what to learn and how much time you can spend each week.",
+      "Start with the first lesson. Finish its practice task, then move to the next step.",
   },
   {
     kicker: "Step 4 of 4",
@@ -91,7 +91,6 @@ export default function Home() {
   const [employers, setEmployers] = useState<Employers | null>(null);
   const [selected, setSelected] = useState("");
   const [scenario, setScenario] = useState("moderate");
-  const [milestones, setMilestones] = useState<string[]>([]);
   const [busy, setBusy] = useState(false);
   const [initial, setInitial] = useState(true);
   const [error, setError] = useState("");
@@ -146,7 +145,6 @@ export default function Home() {
     setRoadmap(null);
     setSimulation(null);
     setEmployers(null);
-    setMilestones([]);
   }
   function setProfile(p: Profile) {
     setProfileState(p);
@@ -260,7 +258,6 @@ export default function Home() {
       if (result) {
         setSelected(result.occupation_id);
         setRoadmap(result);
-        setMilestones(result.milestones.map((m) => m.id));
         setSimulation(null);
         setEmployers(null);
         setStage(2);
@@ -275,7 +272,7 @@ export default function Home() {
       const result = await run(() =>
         api<Employers>("employers/match", {
           ...request(),
-          milestone_ids: milestones,
+          milestone_ids: roadmap.milestones.map((m) => m.id),
         }),
       );
       if (result) {
@@ -295,7 +292,6 @@ export default function Home() {
       setRoadmap(null);
       setEmployers(null);
       setSimulation(null);
-      setMilestones([]);
     }
   }
   async function changeScenario(s: string) {
@@ -304,7 +300,6 @@ export default function Home() {
       setRoadmap(null);
       setEmployers(null);
       setSimulation(null);
-      setMilestones([]);
     }
   }
   async function assessed(id: string) {
@@ -418,7 +413,12 @@ export default function Home() {
               onClick={() => {
                 void navigate(i);
               }}
-              disabled={busy}
+              disabled={
+                busy ||
+                (i === 1 && !analysis) ||
+                (i === 2 && !recommendations) ||
+                (i === 3 && !roadmap)
+              }
             >
               <span className="nav-icon">
                 <Icon name={s.icon} />
@@ -432,16 +432,6 @@ export default function Home() {
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <button
-            className={`insights-link ${stage === 4 ? "active" : ""}`}
-            onClick={() => {
-              void navigate(4);
-            }}
-            disabled={busy}
-          >
-            <Icon name="insights" />
-            System data
-          </button>
           <div className="workspace-note">
             <span className="status-dot" />
             <div>
@@ -592,13 +582,6 @@ export default function Home() {
               {stage === 2 && roadmap && (
                 <RoadmapResults
                   roadmap={roadmap}
-                  selectedMilestones={milestones}
-                  toggleMilestone={(id) => {
-                    setMilestones((m) =>
-                      m.includes(id) ? m.filter((x) => x !== id) : [...m, id],
-                    );
-                    setEmployers(null);
-                  }}
                   simulation={simulation}
                   simulate={(id, level) => {
                     void simulate(id, level);
@@ -627,6 +610,13 @@ export default function Home() {
             <span>SHIFT//OS</span>
             <span>Plan your career with clear information.</span>
             <span>Malaysia · English</span>
+            <button
+              className="team-data-link"
+              onClick={() => void navigate(4)}
+              disabled={busy}
+            >
+              System data
+            </button>
           </footer>
         </main>
       </div>

@@ -2,7 +2,9 @@
 
 Verification date: 22 October 2026. Runtime: the compiled Next.js production frontend, FastAPI and SQLite, without an LLM key. Browser: installed Microsoft Edge through Playwright. This record covers the local MVP and does not claim a complete assistive-technology or cross-browser certification.
 
-Latest rerun after the plain-English update: all nine Playwright tests passed in 25.2 seconds. Test-file formatting and TypeScript checks also passed. The 390px profile screenshot was inspected: labels were clear, with no charts, clipping or horizontal overflow. Automated checks covered the full journey at 390px and 760px.
+Latest fixed-roadmap verification: all nine Playwright tests passed in 26.2 seconds against the local production build. They verify ordered skill steps and final project, one visible learning link per skill, no inclusion checkboxes, exact whole-plan milestone and skill IDs in job projections, optional disclosures, prerequisite-gated navigation, keyboard controls, failure recovery, black text, printing and 390px/760px layouts. Desktop and mobile learning-plan screenshots were visually inspected: the first step is clear, instructions are readable, and there are no charts or clipping. Production build, TypeScript, source/test formatting and strict UI audit passed. The full backend suite passed 121 tests.
+
+Earlier plain-English verification: all nine tests passed in 25.2 seconds before the fixed-plan changes.
 
 Hosted verification: all nine tests also passed against `https://hackathon-project-xewk.onrender.com` in 36.0 seconds on 22 October 2026. The live website and proxied API returned HTTP 200. The browser title and page description were subsequently simplified; application controls and calculation behavior were unchanged.
 
@@ -25,8 +27,8 @@ The workflow specification is `frontend/tests/workflow.spec.ts`; browser configu
 | SQL answer submission | Three adaptive questions produced "Estimated level 2"; downstream skill comparisons updated |
 | Career selection and scenario switch | Recomputed through the backend; changed hypothetical scores while preserving target intent |
 | "Where this information comes from" disclosure | Native expandable details exposed the score method, assumptions and sources |
-| "Make my learning plan" and "Include in my plan" | Generated role-specific resources; sent only selected milestone IDs to employer projection; backward navigation preserved choices |
-| "See what could change" | Backend changed only the selected skill and recalculated job requirement coverage |
+| "Make my learning plan" and fixed ordered steps | Generated role-specific resources and concrete practice tasks; sent every roadmap milestone ID to job projection; no inclusion checkboxes; backward navigation preserved the plan |
+| "Optional: explore one skill" and "See what could change" | Simulator remained hidden until requested; backend changed only the selected skill and recalculated job requirement coverage |
 | Job options and "Your career plan" | Rendered clearly labelled example jobs, remaining requirements, portfolio work and a next action |
 | "Print my career plan" | Called print through a test-only spy; no printer job was sent |
 | System data sections | All four inspectors returned real calculated example diagnostics without answer keys |
@@ -67,7 +69,7 @@ Each line records the applicable Anti Slop rule and its evidence. User-authorise
 - R-21 PASS: the brief explicitly requires the light workspace; no dark theme is shipped.
 - R-22 PASS: no decorative illustrations.
 - R-23 PASS: the product name and navigation come from the brief; no unauthorised identity assets or external trust claims.
-- R-24 PASS: navigation controls reach implemented areas; resource/source links use curated catalogue URLs.
+- R-24 PASS: completed stages reach implemented areas, future stages wait for prerequisites, and resource/source links use curated catalogue URLs.
 - R-25 PASS: black foregrounds are tested. Contrast is 21:1 on white, 19.76:1 on the page background and 17.12:1 on primary pale blue; the primary hover fill remains 14.6:1.
 - R-26 PASS: the source audit finds no actionless controls; the interaction ledger records real actions and results.
 - R-27 PASS: empty profile/results, initial and delayed loading, backend failure, extraction errors and recovery were exercised.
@@ -78,7 +80,7 @@ Each line records the applicable Anti Slop rule and its evidence. User-authorise
 - R-32 PASS: native semantics, skip navigation, keyboard selection/dismissal and focus styling are exercised.
 - R-33 PASS: source/CSS were authored directly; no source-rewriting feature scripts are used.
 - R-34 PASS: all delivered surfaces use the tested light theme; no unsupported theme toggle exists.
-- R-35 PASS: production compilation and real-browser interaction tests passed; desktop/mobile captures were visually inspected.
+- R-35 PASS: production compilation and all nine updated browser tests passed; fixed-plan desktop/mobile captures were visually inspected.
 - R-36 PASS: no fabricated security, compliance, performance, customer or hiring claims.
 - R-37 PASS: the user's visual direction was recorded before UI generation, with declared dials and rationale.
 - R-38 PASS: synthetic employer/market examples and curated exposure assumptions are labelled throughout, as explicitly requested.
@@ -94,4 +96,4 @@ Craftsmanship locks C-1 through C-5: PASS, supported by the written design ratio
 - Production compilation passed using Next.js's supported Webpack option.
 - No native alert/confirm/prompt, clickable non-semantic containers, placeholder navigation links or uncancelled remote searches were found. Dataset search is local and explicitly clearable.
 
-The raw screenshots are in `.local/screenshots/`. Docker, PostgreSQL, live LLM calls, full screen-reader evaluation and additional browser/device platforms remain unverified; see `delivery_status.md` and `limitations.md`.
+The raw screenshots are in `.local/screenshots/`. Render has built and started the combined Docker container. Local Compose, PostgreSQL, live LLM calls, full screen-reader evaluation and additional browser/device platforms remain unverified; see `delivery_status.md` and `limitations.md`.

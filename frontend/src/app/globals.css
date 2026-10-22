@@ -227,6 +227,10 @@ svg {
   background: var(--accent);
   border-color: #c4d7f2;
 }
+.nav-item:disabled {
+  background: transparent;
+  border-color: transparent;
+}
 .nav-icon {
   align-self: flex-start;
   padding-top: 3px;
@@ -986,6 +990,26 @@ details[open] > summary {
   font-weight: 700;
   letter-spacing: -0.5px;
 }
+.team-data-link {
+  background: transparent;
+  border: 0;
+  min-height: 44px;
+  padding: 8px;
+  font-size: 11px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+.content-grid.simple-profile {
+  display: block;
+  max-width: 64rem;
+}
+.optional-details {
+  margin-block: 20px;
+}
+.optional-details > summary {
+  border-top: 1px solid var(--border);
+  padding-block: 12px;
+}
 .overline {
   font-size: 11px;
   font-weight: 600;
@@ -1263,8 +1287,15 @@ td:first-child {
   margin: 14px 0 8px;
 }
 .milestone-body > p {
-  font-size: 12px;
+  font-size: 14px;
   margin: 10px 0;
+  max-width: 70ch;
+}
+.milestone-body h3 {
+  margin-top: 20px;
+}
+.milestone.start-step {
+  border-color: var(--focus);
 }
 .milestone-meta {
   display: flex;
@@ -1298,11 +1329,11 @@ td:first-child {
   flex: 1;
 }
 .resource strong {
-  font-size: 12px;
+  font-size: 14px;
   display: block;
 }
 .resource span {
-  font-size: 10px;
+  font-size: 12px;
   display: block;
   margin-top: 4px;
 }

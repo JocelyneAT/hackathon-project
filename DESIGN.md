@@ -36,7 +36,7 @@ components:
 
 The audience is ASEAN career starters and professionals. The first operational market is Malaysia, with English content and en-MY number conventions. Product register throughout. The supplied development brief owns all business behavior.
 
-The user's latest instruction is plain English with no complex analogies or charts. The four steps are Your profile, Career options, Learning plan and Job options. Each page explains what to do next using short direct sentences. Numbers use plain text or small tables. No charts, bars, meters, or chapter/pathway metaphors. ENERGY 1 / RHYTHM 2 / MOTION 1.
+The user's latest instruction is plain English with no complex analogies or charts, fewer visible choices, and a fixed learning plan to follow. The four steps are Your profile, Career options, Learning plan and Job options. Each page explains what to do next using short direct sentences. Numbers use plain text or small tables. No charts, bars, meters, or chapter/pathway metaphors. ENERGY 1 / RHYTHM 2 / MOTION 1.
 
 The signature is the doubled slash in the user-supplied product name, repeated as quiet separators in the journey and section metadata. No invented logo, photos, decorative graphs, or marketing statistics.
 
@@ -52,7 +52,7 @@ Arial provides compact, predictable forms without network font swaps. Headings u
 
 ## Layout
 
-Desktop: 248px journey sidebar and natural-height content capped at 78rem. Main sections use a flexible content column and a narrow evidence note. On screens under 900px, navigation becomes a horizontal journey, then a two-column compact navigation under 600px. Forms always scroll with the document. Dataset tables own horizontal overflow. Spacing ranges from 8px control gaps to 32px sections, based on information grouping.
+Desktop: 248px journey sidebar and natural-height content capped at 78rem. The profile uses one focused form column, with optional work/study/location, CV and skill-check details collapsed. It has no duplicate journey explainer. On screens under 900px, navigation becomes a horizontal journey, then a two-column compact navigation under 600px. Forms always scroll with the document. Dataset tables own horizontal overflow. Spacing ranges from 8px control gaps to 32px sections, based on information grouping.
 
 ## Elevation & Depth
 
@@ -68,7 +68,9 @@ Native buttons own actions; native selects intentionally delegate popup geometry
 
 Primary buttons use pale blue fill with black text; secondary buttons use white fill and border; tertiary actions use transparent fill. All targets are at least 44px high. Disabled opacity never reduces black text contrast. Focus is a 3px outline. Selected states use aria-pressed or aria-current.
 
-Cards group actual decisions. Tables use native semantics. Do not use charts or visual score bars. Explain scores in short everyday sentences. Say estimated level or not checked instead of provisional proficiency. The separate System data area remains available for the project team.
+Cards group actual decisions. Tables use native semantics. Do not use charts or visual score bars. Explain scores in short everyday sentences. Say estimated level or not checked instead of provisional proficiency. Future steps remain disabled until their prerequisites exist. System data stays available through a small footer link for the project team.
+
+The learning plan is one ordered sequence, with all generated milestones included. Every step shows its planned week range, one primary learning material, a concrete practice task and an output to check before moving on. A final project ends the plan. Time estimates exclude that project's unestimated work. AI scenarios, extra learning materials and the single-skill simulator use collapsed details. The main continuation action appears before optional tools.
 
 Forms use noValidate with inline field errors, and retain values on failure. Search is local, capped by dataset size, with a clear button. Uploaded documents are not retained. Skill checks appear inline, avoiding modal focus complexity.
 

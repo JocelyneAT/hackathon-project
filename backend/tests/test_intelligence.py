@@ -1,5 +1,6 @@
 import io
 import math
+from copy import deepcopy
 
 import pytest
 from docx import Document
@@ -7,9 +8,10 @@ from fastapi.testclient import TestClient
 from pypdf import PdfWriter
 from pypdf.generic import DecodedStreamObject, DictionaryObject, NameObject
 
-from backend.app import assessment
+from backend.app import assessment, engines
 from backend.app.data import get_catalog
 from backend.app.main import app
+from backend.app.schemas import IntelligenceRequest
 
 client = TestClient(app)
 
@@ -176,6 +178,66 @@ def test_roadmap_respects_prerequisite_order_and_real_resources():
             if prerequisite in ids:
                 assert ids.index(prerequisite) < ids.index(milestone["skill_id"])
         assert all(r["url"].startswith("https://") and r["cost"] == "free" for r in milestone["resources"])
+
+
+@pytest.mark.parametrize(
+    "skill_id, task, output",
+    [
+        ("sql", "join the tables", "three queries"),
+        ("excel", "pivot table", "workbook"),
+        ("python", "function and a loop", "code and its output"),
+        ("statistics", "mean, median, and range", "numbers and calculations"),
+        ("communication", "five-sentence update", "written update or a recording"),
+        ("business-analysis", "three acceptance checks", "request and checks"),
+        ("automation", "required value missing", "both test results"),
+        ("power-bi", "category table", "save the report"),
+        ("sustainability", "waste per unit of activity", "practice data"),
+    ],
+)
+def test_roadmap_gives_each_skill_a_specific_practice_task_and_output(skill_id, task, output):
+    career = next(
+        o for o in get_catalog()["occupations"] if any(r["skill_id"] == skill_id for r in o["requirements"])
+    )
+    plan = post("roadmaps/generate", payload(occupation_id=career["id"]))
+    milestone = next(m for m in plan["milestones"] if m["skill_id"] == skill_id)
+    assert task in milestone["exercise"].lower()
+    assert output in milestone["verification"].lower()
+    assert "create a documented practical example" not in milestone["exercise"].lower()
+    assert milestone["current_level"] is None
+
+
+def test_roadmap_practice_guidance_keeps_the_existing_schedule():
+    plan = post("roadmaps/generate", payload(profile={"weekly_hours": 8}))
+    assert [(m["skill_id"], m["hours"]) for m in plan["milestones"]] == [
+        ("sql", 32),
+        ("excel", 24),
+        ("communication", 20),
+        ("statistics", 36),
+        ("python", 22),
+    ]
+    assert plan["total_hours"] == 134
+    assert plan["total_weeks"] == 17
+    assert all(m["resources"] and m["current_level"] is None for m in plan["milestones"])
+
+
+def test_roadmap_supports_future_skills_and_imported_practice_guidance(monkeypatch):
+    data = deepcopy(get_catalog())
+    future_skill = {**data["skills"][0], "id": "future-skill", "name": "Future skill", "prerequisites": []}
+    data["skills"].append(future_skill)
+    career = next(o for o in data["occupations"] if o["id"] == "data-analyst")
+    career["requirements"] = [{"skill_id": "future-skill", "required_level": 2, "weight": 1}]
+    monkeypatch.setattr(engines, "catalog", lambda: data)
+    request = IntelligenceRequest(occupation_id=career["id"])
+    milestone = engines.roadmap(request)["milestones"][0]
+    assert "Future skill" in milestone["exercise"]
+    assert "does not establish verified proficiency" in milestone["verification"]
+    assert milestone["resources"] == []
+
+    future_skill.update(exercise="Build the imported practice task.", verification="Save its working output.")
+    imported = engines.roadmap(request)["milestones"][0]
+    assert imported["exercise"] == "Build the imported practice task."
+    assert imported["verification"] == "Save its working output."
+    assert imported["hours"] == milestone["hours"]
 
 
 def test_simulation_changes_only_selected_skill_does_not_mutate_profile():

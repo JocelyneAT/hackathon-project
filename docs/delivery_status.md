@@ -12,7 +12,8 @@ Hosted on Render at <https://hackathon-project-xewk.onrender.com>. The Linux con
 - Adaptive career-stage and direction inputs, separate current and target occupations, interests, learning constraints, optional CV extraction and reviewed source phrases.
 - PDF, DOCX and TXT extraction with validation and no intentional document retention. Extracted background can be reviewed and copied into editable fields.
 - Five optional adaptive knowledge assessments, curated answer keys, server-owned grading, provisional evidence, expiration, replay rejection and no answer-key leakage.
-- Backend career ranking, qualified fit ranges, skill gaps, task-weighted AI exposure, hypothetical scenario comparisons, prerequisite-aware roadmaps, single-skill simulations and selected-milestone employer projections.
+- Backend career ranking, qualified fit ranges, skill gaps, task-weighted AI exposure, hypothetical scenario comparisons, prerequisite-aware roadmaps and single-skill simulations. The current user flow presents one complete ordered roadmap and projects example job matches from all of its steps.
+- Each roadmap skill has one primary learning link, a concrete practice task and an output to check. A final project follows the skill steps. Extra profile inputs, skill checks, AI comparisons and simulations remain available in collapsed sections.
 - Employer eligibility considerations, SDG rationales, portfolio projects and a printable career action summary inside the fourth stage.
 - Dataset import validation, atomic rollback, immutable versions, JSON/CSV support and dated market snapshot comparisons.
 - Synthetic HTTP demonstration, environment configuration, Windows launcher, Docker/Compose files, methodology and API documentation.
@@ -40,7 +41,7 @@ Occupation requirements, task exposure indicators, effort estimates and scenario
 
 | Verification | Actual result |
 |---|---|
-| `python -m pytest backend/tests -q --basetemp=.pytest-verification` | 110 passed; one upstream Starlette TestClient deprecation warning |
+| `python -m pytest backend/tests -q --basetemp=.pytest-fixed-roadmap` | 121 passed; one upstream Starlette TestClient deprecation warning |
 | `ruff check backend scripts` | Passed |
 | `ruff format --check backend scripts` | Passed; 19 files |
 | `npm --prefix frontend run typecheck` | Passed |
