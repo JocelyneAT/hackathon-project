@@ -2,6 +2,8 @@
 
 An evidence-aware career planning MVP for Malaysia, with country coverage architecture for all eleven ASEAN countries. The four-step application connects Your profile, Career options, Learning plan and Job options. System data explains the data and calculations. The user interface uses plain English and simple tables without charts.
 
+Live demo: [Hackathon Project](https://hackathon-project-xewk.onrender.com). The free service may take about a minute to wake after being idle. See [hosting details](docs/hosting.md).
+
 The interface calls a real FastAPI backend backed by SQLite. Career matching, skill gaps, task exposure, scenarios, learning priorities, skill simulations and projected employer alignment are calculated by deterministic Python engines. The application works without an LLM key.
 
 **Evidence limits:** occupational requirements and AI task indicators are curated illustrative data. Employer roles and dated market snapshots are synthetic demonstrations. They are not actual vacancies, national labour statistics, measured exposure findings or employment predictions. Official learning and UN links provide resource and SDG context; they do not validate the scoring model.

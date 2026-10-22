@@ -6,6 +6,8 @@ The website is live at <https://hackathon-project-xewk.onrender.com>. Your compu
 
 The first Render deployment became live on 22 October 2026 at 14:59 in the Asia/Makassar time zone. The homepage and `/api/v1/system/coverage` returned HTTP 200. All nine Playwright browser tests passed against the hosted website in 36.0 seconds, including the complete four-step flow, real backend calculations, mobile layouts, keyboard controls, failure recovery and no-chart checks.
 
+The final plain-English browser title is live in commit `74347433e36301945a49c0dab1242a099e89bc41`, deployment `dep-dbcraiss728c73at25hg`, completed at 15:05. Its title, homepage and API were checked again successfully after deployment. The current profile form was also inspected in the browser, and the hosted mobile screenshot showed no clipping or charts.
+
 ## Earlier temporary preview
 
 The team preview uses a temporary Cloudflare Tunnel to the production frontend running on the development computer. The frontend forwards `/api/*` to the local FastAPI server. Both the website and backend must remain running, and the computer must stay connected and awake.
