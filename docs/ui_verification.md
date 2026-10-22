@@ -6,6 +6,8 @@ Latest fixed-roadmap verification: all nine Playwright tests passed in 26.2 seco
 
 Earlier plain-English verification: all nine tests passed in 25.2 seconds before the fixed-plan changes.
 
+The fixed-plan release was also checked after Render reported the deployed commit live. Three hosted browser tests passed in 14.5 seconds: the full target-career/assessment/fixed-plan/whole-plan-projection flow, separate current/target work responsibilities and the 390px mobile journey. The hosted coverage API returned HTTP 200.
+
 Hosted verification: all nine tests also passed against `https://hackathon-project-xewk.onrender.com` in 36.0 seconds on 22 October 2026. The live website and proxied API returned HTTP 200. The browser title and page description were subsequently simplified; application controls and calculation behavior were unchanged.
 
 The current UI rule is simple English, direct instructions and no complex analogies or charts. The four steps are **Your profile**, **Career options**, **Learning plan** and **Job options**. Results use short text and small tables. Earlier records or technical API documentation may use terms such as "provisional level" or "pathway"; the user interface now says "Estimated level" and "career options". Backend field names and calculation meanings are unchanged.

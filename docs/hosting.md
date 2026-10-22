@@ -8,7 +8,7 @@ The first Render deployment became live on 22 October 2026 at 14:59 in the Asia/
 
 The final plain-English browser title is live in commit `74347433e36301945a49c0dab1242a099e89bc41`, deployment `dep-dbcraiss728c73at25hg`, completed at 15:05. Its title, homepage and API were checked again successfully after deployment. The current profile form was also inspected in the browser, and the hosted mobile screenshot showed no clipping or charts.
 
-The next update simplifies the visible controls and replaces milestone choices with one complete ordered learning plan. Before deployment, its production build, all 121 backend tests, all nine browser tests, formatting, TypeScript and strict UI audit passed. The desktop and mobile roadmap screenshots were inspected. Live verification of this update is recorded after the deployment finishes.
+The fixed-roadmap update is live in commit `31afe370e8596312da60730fa5d55234c31de0db`, deployment `dep-dbd018e1egvs73f7f2i0`, completed on 22 October 2026 at 20:26 Asia/Makassar. It simplifies the visible controls and replaces milestone choices with one complete ordered learning plan. Before deployment, its production build, all 121 backend tests, all nine browser tests, formatting, TypeScript and strict UI audit passed. The desktop and mobile roadmap screenshots were inspected. After deployment, three hosted browser tests passed in 14.5 seconds, covering the full fixed-plan workflow, separate current/target jobs and the 390px mobile journey. The hosted API returned HTTP 200.
 
 ## Earlier temporary preview
 

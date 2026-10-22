@@ -73,7 +73,7 @@ For a production frontend build, set `BACKEND_URL` **before** running `npm --pre
 
 ## Demonstrate the complete workflow
 
-Enter your background or use a synthetic profile in the interface. Uploading a CV and completing a skill assessment are optional. The target-career mode respects the chosen occupation. Working professionals can select their actual current tasks. Changing a scenario, skill projection or selected roadmap milestones triggers backend calculations.
+Enter your background or use a synthetic profile in the interface. Extra profile fields, CV upload, skill checks and AI comparisons are available in collapsed sections. The target-career mode respects the chosen occupation. Working professionals can select their actual current tasks. The learning plan includes every generated step in order, with one primary learning link, a practice task and an output check for each skill, followed by a final project. Job comparisons project the whole plan. Optional skill simulations still trigger backend calculations without changing the plan.
 
 With the API running, execute the HTTP demonstration:
 
