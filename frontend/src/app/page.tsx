@@ -13,69 +13,17 @@ import {
   type Scenarios,
   type Roadmap,
   type Simulation,
-  type Employers,
+  type Assessment,
   type Task,
 } from "@/lib/types";
-import { Personal } from "@/components/personal";
-import {
-  CareerResults,
-  RoadmapResults,
-  EmployerResults,
-} from "@/components/results";
+import { Button, Icon } from "@/components/ui";
+import { ProfileSetup, SkillReview } from "@/components/journey-profile";
+import { CareerWorkspace } from "@/components/career-workspace";
 import { Insights, type InsightsData } from "@/components/insights";
-import { Button, Icon, Tag, Empty } from "@/components/ui";
 
-const stages = [
-  {
-    title: "Your profile",
-    sub: "Tell us about yourself",
-    icon: "profile",
-  },
-  {
-    title: "Career options",
-    sub: "Compare jobs and skills",
-    icon: "career",
-  },
-  {
-    title: "Learning plan",
-    sub: "Follow your steps in order",
-    icon: "roadmap",
-  },
-  {
-    title: "Job options",
-    sub: "See jobs to work towards",
-    icon: "employer",
-  },
-];
-const headings = [
-  {
-    kicker: "Step 1 of 4",
-    title: "Find a career that fits you.",
-    description:
-      "Tell us about your skills, interests, and experience. We will help you choose what to do next.",
-  },
-  {
-    kicker: "Step 2 of 4",
-    title: "Compare career options.",
-    description:
-      "See which jobs may suit you, what skills they need, and how AI may change the work.",
-  },
-  {
-    kicker: "Step 3 of 4",
-    title: "Your step-by-step learning plan.",
-    description:
-      "Start with the first lesson. Finish its practice task, then move to the next step.",
-  },
-  {
-    kicker: "Step 4 of 4",
-    title: "Find jobs to work towards.",
-    description:
-      "See how the skills in your plan match example jobs. These are not real job openings.",
-  },
-];
-
+const steps = ["Your background", "Your skills", "Your next chapter"];
 export default function Home() {
-  const [stage, setStage] = useState(0);
+  const [stage, setStage] = useState(-1);
   const [profile, setProfileState] = useState<Profile>({ ...blankProfile });
   const [skills, setSkills] = useState<Skill[]>([]);
   const [occupations, setOccupations] = useState<Occupation[]>([]);
@@ -88,14 +36,14 @@ export default function Home() {
   const [scenarios, setScenarios] = useState<Scenarios | null>(null);
   const [roadmap, setRoadmap] = useState<Roadmap | null>(null);
   const [simulation, setSimulation] = useState<Simulation | null>(null);
-  const [employers, setEmployers] = useState<Employers | null>(null);
   const [selected, setSelected] = useState("");
   const [scenario, setScenario] = useState("moderate");
   const [busy, setBusy] = useState(false);
-  const [initial, setInitial] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [error, setError] = useState("");
-  const [message, setMessage] = useState("");
-  const [demo, setDemo] = useState("");
+  const [uploadName, setUploadName] = useState("");
+  const [uploadMessage, setUploadMessage] = useState("");
+  const fileInput = useRef<HTMLInputElement>(null);
   const latest = useRef(0);
   async function run<T>(fn: () => Promise<T>): Promise<T | undefined> {
     setBusy(true);
@@ -106,111 +54,157 @@ export default function Home() {
       setError(
         e instanceof Error
           ? e.message
-          : "The app could not connect. Try again.",
+          : "Something went wrong. Please try again.",
       );
-      return undefined;
     } finally {
       setBusy(false);
     }
   }
   async function bootstrap() {
-    setInitial(true);
+    setLoading(true);
     await run(async () => {
-      const [o, s, i] = await Promise.all([
-        api<{ occupations: Occupation[] }>("occupations"),
+      const [s, o, i] = await Promise.all([
         api<{ skills: Skill[] }>("skills"),
+        api<{ occupations: Occupation[] }>("occupations"),
         api<InsightsData>("system/insights"),
       ]);
-      setOccupations(o.occupations);
       setSkills(s.skills);
+      setOccupations(o.occupations);
       setSystem(i);
     });
-    setInitial(false);
+    setLoading(false);
   }
   useEffect(() => {
     void bootstrap();
-  }, []); // Initial catalog load is read-only and repeatable.
+  }, []);
   useEffect(() => {
-    document.title =
-      stage === 4
-        ? "System data | SHIFT//OS"
-        : `${stages[stage].title} | SHIFT//OS`;
+    document.title = `${stage < 0 ? "Your next chapter" : stage === 3 ? "System data" : steps[stage]} | SHIFT//OS`;
   }, [stage]);
-  function invalidate() {
+  function go(next: number) {
+    setStage(next);
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+  function setProfile(p: Profile) {
     latest.current++;
+    setProfileState(p);
+    if (stage !== 1) setAnalysis(null);
     setRecommendations(null);
     setGaps(null);
     setImpact(null);
-    setScenarios(null);
     setRoadmap(null);
     setSimulation(null);
-    setEmployers(null);
   }
-  function setProfile(p: Profile) {
-    setProfileState(p);
-    setAnalysis(null);
-    setSelected("");
-    invalidate();
-    setMessage("");
-  }
-  const request = (p = profile, id = selected, s = scenario) => ({
+  const request = (id = selected, p = profile, s = scenario) => ({
     profile: p,
-    occupation_id: id,
+    occupation_id: id || null,
     scenario: s,
   });
-  async function analyze(p = profile) {
-    if (
-      !Number.isFinite(p.weekly_hours) ||
-      p.weekly_hours < 1 ||
-      p.weekly_hours > 60
-    ) {
-      setError("Enter between 1 and 60 study hours per week.");
-      document.getElementById("hours")?.focus();
+  async function upload(file?: File) {
+    if (!file) return;
+    if (!/\.(pdf|docx|txt)$/i.test(file.name) || file.size > 5 * 1024 * 1024) {
+      setError("Choose a PDF, DOCX or TXT file under 5 MB.");
       return;
     }
-    if (p.employment_country !== "MY") {
-      setError(
-        "We do not have data for this country yet. Choose Malaysia to continue.",
+    const body = new FormData();
+    body.append("file", file);
+    const result = await run(() =>
+      api<{
+        skills: { skill_id: string; source_phrase: string }[];
+        sections: Record<string, string[]>;
+        profile_fields: Partial<Profile>;
+      }>("cv/extract", body),
+    );
+    if (result) {
+      const sections = result.sections;
+
+      setProfile({
+        ...profile,
+        ...result.profile_fields,
+        skill_ids: [
+          ...new Set([
+            ...profile.skill_ids,
+            ...result.skills.map((s) => s.skill_id),
+          ]),
+        ],
+        cv_evidence: result.skills.map((s) => ({
+          skill_id: s.skill_id,
+          source_phrase: s.source_phrase,
+        })),
+        education:
+          profile.education ||
+          sections.education?.join("; ").slice(0, 500) ||
+          "",
+        projects: profile.projects || sections.projects?.join("\n") || "",
+        background:
+          profile.background ||
+          [
+            ...(sections.experience || []),
+            ...(sections.responsibilities || []),
+          ].join("\n"),
+      });
+      setUploadName(file.name);
+      setUploadMessage(
+        `We found ${result.skills.length} skills and filled in the sections we could read. Review them and complete anything missing. Your CV file is not retained.`,
       );
+      go(0);
+    }
+    if (fileInput.current) fileInput.current.value = "";
+  }
+  async function reviewSkills() {
+    if (profile.direction === "target" && !profile.occupation_id) {
+      setError("Choose your target career to continue.");
+      return;
+    }
+    if (
+      !Number.isFinite(profile.weekly_hours) ||
+      profile.weekly_hours < 1 ||
+      profile.weekly_hours > 60
+    ) {
+      setError("Enter between 1 and 60 learning hours per week.");
       return;
     }
     const result = await run(() =>
-      api<Analysis>("profiles/analyze", { profile: p }),
+      api<Analysis>("profiles/analyze", { profile }),
     );
     if (result) {
+      const ids = [
+        ...new Set([
+          ...profile.skill_ids,
+          ...result.skills.map((s) => s.skill_id),
+        ]),
+      ];
+      setProfileState({ ...profile, skill_ids: ids });
       setAnalysis(result);
-      setMessage(
-        "Your profile is ready. Check your skill details, or continue without a skill test.",
-      );
-      setTimeout(
-        () =>
-          document.querySelector(".evidence-panel")?.scrollIntoView({
-            behavior: window.matchMedia("(prefers-reduced-motion: reduce)")
-              .matches
-              ? "instant"
-              : "smooth",
-            block: "start",
-          }),
-        80,
-      );
+      go(1);
     }
   }
-  async function careerData(id = selected, s = scenario, p = profile) {
+  async function careerData(id = "", s = scenario) {
     const generation = ++latest.current;
     const result = await run(async () => {
-      const rec = await api<Recommendations>("careers/recommend", {
-        profile: p,
-        occupation_id: id || null,
-        scenario: s,
-      });
+      const rec = await api<Recommendations>(
+        "careers/recommend",
+        request(id, profile, s),
+      );
       const actual =
-        p.direction === "target" && p.occupation_id
-          ? p.occupation_id
-          : id || rec.selected_occupation_id;
+        id ||
+        (profile.direction === "target" ? profile.occupation_id : null) ||
+        rec.selected_occupation_id;
       const [gap, ai, compare] = await Promise.all([
-        api<Gaps>("careers/skill-gaps", request(p, actual, s)),
-        api<Impact>("ai-impact/analyze", request(p, actual, s)),
-        api<Scenarios>("scenarios/compare", request(p, actual, s)),
+        api<Gaps>("careers/skill-gaps", request(actual, profile, s)),
+        api<Impact>(
+          "ai-impact/analyze",
+          request(
+            actual,
+            {
+              ...profile,
+              current_occupation_id: null,
+              occupation_id: actual,
+              task_ids: [],
+            },
+            s,
+          ),
+        ),
+        api<Scenarios>("scenarios/compare", request(actual, profile, s)),
       ]);
       return { rec, actual, gap, ai, compare };
     });
@@ -220,406 +214,333 @@ export default function Home() {
       setGaps(result.gap);
       setImpact(result.ai);
       setScenarios(result.compare);
-      return true;
-    }
-    return false;
-  }
-  function scrollTop() {
-    window.scrollTo({ top: 0, behavior: "instant" });
-    document.getElementById("main")?.focus();
-  }
-  async function navigate(next: number) {
-    if (busy) return;
-    if (next === 0 || next === 4) {
-      setStage(next);
-      scrollTop();
-      return;
-    }
-    if (!analysis) {
-      setError("Create your profile in step 1 before continuing.");
-      setStage(0);
-      return;
-    }
-    if (next === 1) {
-      if (await careerData()) {
-        setStage(1);
-        scrollTop();
-      }
-    }
-    if (next === 2) {
-      if (roadmap) {
-        setStage(2);
-        scrollTop();
-        return;
-      }
-      const result = await run(() =>
-        api<Roadmap>("roadmaps/generate", request()),
-      );
-      if (result) {
-        setSelected(result.occupation_id);
-        setRoadmap(result);
-        setSimulation(null);
-        setEmployers(null);
-        setStage(2);
-        scrollTop();
-      }
-    }
-    if (next === 3) {
-      if (!roadmap) {
-        setError("Create your learning plan before viewing job options.");
-        return;
-      }
-      const result = await run(() =>
-        api<Employers>("employers/match", {
-          ...request(),
-          milestone_ids: roadmap.milestones.map((m) => m.id),
-        }),
-      );
-      if (result) {
-        setEmployers(result);
-        setStage(3);
-        scrollTop();
-      }
-    }
-  }
-  async function changeCareer(id: string) {
-    let p = profile;
-    if (profile.direction === "target") {
-      p = { ...profile, occupation_id: id };
-    }
-    if (await careerData(id, scenario, p)) {
-      setProfileState(p);
-      setRoadmap(null);
-      setEmployers(null);
-      setSimulation(null);
-    }
-  }
-  async function changeScenario(s: string) {
-    if (await careerData(selected, s)) {
       setScenario(s);
       setRoadmap(null);
-      setEmployers(null);
       setSimulation(null);
+      if (stage !== 2) go(2);
     }
   }
-  async function assessed(id: string) {
+  async function assessed(a: Assessment) {
     const p = {
       ...profile,
-      assessment_ids: [...new Set([...profile.assessment_ids, id])],
+      assessment_ids: [...profile.assessment_ids, a.assessment_id].slice(-20),
     };
-    setProfileState(p);
-    invalidate();
+    setProfile(p);
     const result = await run(() =>
       api<Analysis>("profiles/analyze", { profile: p }),
     );
-    if (result) {
-      setAnalysis(result);
-      setMessage(
-        "Your skill test result is saved. Your career options will use this result.",
-      );
-    } else {
-      setMessage(
-        "Your skill test is complete. Check your profile again to see the result.",
-      );
-    }
+    if (result) setAnalysis(result);
+  }
+  async function loadRoadmap() {
+    const r = await run(() => api<Roadmap>("roadmaps/generate", request()));
+    if (r) setRoadmap(r);
   }
   async function simulate(skill_id: string, target_level: number) {
-    const result = await run(() =>
+    const r = await run(() =>
       api<Simulation>("skills/impact", {
         ...request(),
         skill_id,
         target_level,
       }),
     );
-    if (result) setSimulation(result);
+    if (r) setSimulation(r);
   }
-  function loadDemo(value: string) {
-    setDemo(value);
-    if (!value) return;
-    const p: Profile = {
-      ...blankProfile,
-      reported_experience: {},
-      skill_ids: ["excel", "communication"],
-      interests: ["analytics"],
-      education: "Undergraduate business student",
-      background:
-        "Example student profile. Used Excel to manage a student club budget.",
-      projects: "Used Excel tables in a class project.",
-    };
-    if (value === "professional")
-      Object.assign(p, {
-        career_stage: "professional",
-        education: "Diploma in Business Administration",
-        experience_years: 4,
-        current_occupation_id: "admin-assistant",
-        background:
-          "Example office worker. I prepare reports in Excel, arrange meetings, and speak with colleagues. I have studied SQL with help.",
-        skill_ids: ["excel", "communication", "sql"],
-        reported_experience: { sql: "studied" },
-        interests: ["business", "analytics"],
-      });
-    if (value === "target")
-      Object.assign(p, {
-        direction: "target",
-        occupation_id: "data-analyst",
-        education: "Recent computing graduate",
-        background:
-          "Example graduate profile. I built a Python project and studied SQL.",
-        projects: "Used Python to clean and summarise a public dataset.",
-        skill_ids: ["python", "sql", "excel"],
-        interests: ["analytics", "technology"],
-      });
-    setProfile(p);
-    setStage(0);
-    setMessage(
-      "An example profile is ready. You can change any detail before checking it.",
-    );
-  }
-  const heading =
-    stage === 4
-      ? {
-          kicker: "System data",
-          title: "See how the app works.",
-          description:
-            "Check the example data and the rules used to compare careers and skills.",
-        }
-      : headings[stage];
-  const tasks = (system?.catalog?.tasks || []) as Task[];
+  const progress = stage === 0 ? 12 : stage === 1 ? 50 : 100;
   return (
-    <div className="app-shell">
-      <a href="#main" className="skip-link">
+    <div className="shift-app">
+      <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <aside className="sidebar">
-        <button
-          className="brand"
-          type="button"
-          onClick={() => {
-            void navigate(0);
-          }}
-          aria-label="SHIFT OS home"
-          disabled={busy}
-        >
-          SHIFT<span>//</span>OS<span className="brand-period">.</span>
-        </button>
-        <div className="sidebar-caption">Career planning</div>
-        <div className="journey-label">YOUR CAREER PLAN</div>
-        <nav aria-label="Career planning steps">
-          {stages.map((s, i) => (
-            <button
-              key={s.title}
-              className={`nav-item ${stage === i ? "active" : ""}`}
-              aria-current={stage === i ? "step" : undefined}
-              onClick={() => {
-                void navigate(i);
-              }}
-              disabled={
-                busy ||
-                (i === 1 && !analysis) ||
-                (i === 2 && !recommendations) ||
-                (i === 3 && !roadmap)
+      <header className="site-header">
+        <div className="header-inner">
+          <button
+            className="wordmark"
+            onClick={() => go(-1)}
+            disabled={busy}
+            aria-label="SHIFT OS home"
+          >
+            SHIFT<span>//</span>OS<span className="logo-dot">.</span>
+          </button>
+          <span className="header-caption">
+            A little clarity. A better next step.
+          </span>
+          <button
+            className="header-link"
+            onClick={() => go(stage === -1 ? 0 : -1)}
+            disabled={busy || loading}
+          >
+            {stage === -1 ? "Start your journey" : "Back to home"}
+            <Icon name="arrow" size={16} />
+          </button>
+        </div>
+      </header>
+      {stage >= 0 && stage < 3 && (
+        <div className="journey-strip">
+          <div className="journey-inner">
+            <div className="journey-caption">
+              <span>YOUR CAREER JOURNEY</span>
+              <span>{stage + 1} of 3</span>
+            </div>
+            <nav className="journey-steps" aria-label="Your progress">
+              {steps.map((name, i) => (
+                <button
+                  key={name}
+                  className={
+                    stage === i ? "current" : stage > i ? "complete" : ""
+                  }
+                  aria-current={stage === i ? "step" : undefined}
+                  disabled={busy || i > stage}
+                  onClick={() => go(i)}
+                >
+                  <span>
+                    {stage > i ? <Icon name="check" size={12} /> : `0${i + 1}`}
+                  </span>
+                  {name}
+                </button>
+              ))}
+            </nav>
+            <div
+              className="journey-track"
+              role="progressbar"
+              aria-label="Career journey"
+              aria-valuenow={progress}
+              aria-valuemin={0}
+              aria-valuemax={100}
+            >
+              <span style={{ width: `${progress}%` }} />
+            </div>
+          </div>
+        </div>
+      )}
+      <main
+        id="main"
+        className={stage === -1 ? "landing-main" : "journey-main"}
+      >
+        <div className="request-status" aria-live="polite">
+          {busy && (
+            <span>
+              <span className="spinner" />{" "}
+              {loading ? "Getting things ready…" : "Working on your next step…"}
+            </span>
+          )}
+        </div>
+        {error && (
+          <div className="error-banner" role="alert">
+            <div>{error}</div>
+            <Button
+              onClick={() =>
+                loading || skills.length === 0 ? void bootstrap() : setError("")
               }
             >
-              <span className="nav-icon">
-                <Icon name={s.icon} />
-              </span>
-              <span>
-                <strong>{s.title}</strong>
-                <small>{s.sub}</small>
-              </span>
-              <span className="nav-step">{i + 1}</span>
-            </button>
-          ))}
-        </nav>
-        <div className="sidebar-bottom">
-          <div className="workspace-note">
-            <span className="status-dot" />
-            <div>
-              <strong>Malaysia</strong>
-              <small>Example data</small>
-            </div>
+              Try again
+            </Button>
           </div>
-          <p className="sidebar-version">SHIFT//OS · Hackathon edition</p>
-        </div>
-      </aside>
-      <div className="workspace">
-        <header className="topbar">
-          <span className="breadcrumb">
-            Career plan <span>/</span>{" "}
-            {stage === 4 ? "System data" : stages[stage].title}
-          </span>
-          <div className="topbar-right">
-            <span className="market-label">
-              Malaysia <Tag>MY</Tag>
-            </span>
-            <span className="session-label">This session</span>
-          </div>
-        </header>
-        <main id="main" tabIndex={-1}>
-          <div className="page-heading">
-            <div>
-              <p className="eyebrow">{heading.kicker}</p>
-              <h1>{heading.title}</h1>
-              <p className="page-description">{heading.description}</p>
-            </div>
-            {stage < 4 && (
-              <div className="stage-indicator">
-                <span>{String(stage + 1).padStart(2, "0")}</span>
-                <span> / 04</span>
+        )}
+        <input
+          ref={fileInput}
+          className="sr-only"
+          type="file"
+          aria-label="Upload your CV"
+          accept=".pdf,.docx,.txt"
+          onChange={(e) => void upload(e.target.files?.[0])}
+          disabled={busy}
+        />
+        {stage === -1 && (
+          <>
+            <section className="landing-hero">
+              <div className="hero-copy">
+                <span className="eyebrow">
+                  <span className="tiny-star">✳</span> BUILT AROUND YOU
+                </span>
+                <h1>
+                  Your next chapter
+                  <br />
+                  starts with <em>you.</em>
+                </h1>
+                <p>
+                  You have more potential than a job title can say.
+                  <br className="desktop-break" /> Discover where your skills
+                  could take you—and how to get there.
+                </p>
+                <div className="hero-actions">
+                  <Button
+                    primary
+                    onClick={() => fileInput.current?.click()}
+                    disabled={busy || loading}
+                  >
+                    <Icon name="upload" size={18} /> Upload CV · quick start
+                  </Button>
+                  <Button onClick={() => go(0)} disabled={busy || loading}>
+                    Start from scratch <Icon name="arrow" size={17} />
+                  </Button>
+                </div>
+                <span className="hero-footnote">
+                  PDF, DOCX or TXT · No account needed · Your CV stays private
+                </span>
               </div>
-            )}
-          </div>
-          {stage === 0 && (
-            <div className="demo-toolbar">
-              <p>
-                <Icon name="info" size={16} /> Want to try the app? Use an
-                example profile.
-              </p>
-              <select
-                aria-label="Load example profile"
-                value={demo}
-                disabled={busy}
-                onChange={(e) => loadDemo(e.target.value)}
-              >
-                <option value="">Choose an example</option>
-                <option value="starter">Student or first job</option>
-                <option value="professional">Office worker</option>
-                <option value="target">Wants to be a Data Analyst</option>
-              </select>
-            </div>
-          )}
-          <div className="status-area" aria-live="polite" aria-atomic="true">
-            {busy ? (
-              <div className="status-message">
-                <span className="spinner" />
-                Checking your details...
+              <div className="hero-art" aria-hidden="true">
+                <div className="orb orb-one" />
+                <div className="orb orb-two" />
+                <span className="art-cross">+</span>
+                <div className="art-caption">THE FUTURE ISN’T FIXED.</div>
+                <div className="future-card">
+                  <div className="future-card-top">
+                    <span className="mini-mark">S//</span>
+                    <span>YOUR NEXT CHAPTER</span>
+                    <span>↗</span>
+                  </div>
+                  <div className="future-card-body">
+                    <div className="art-person">
+                      <Icon name="profile" size={33} />
+                    </div>
+                    <div>
+                      <span>Made for your potential</span>
+                      <strong>A career that fits.</strong>
+                    </div>
+                  </div>
+                  <div className="art-path">
+                    <span />
+                    <i />
+                    <span />
+                    <i />
+                    <span />
+                  </div>
+                  <div className="art-card-bottom">
+                    <span>Your skills</span>
+                    <span>Your possibilities</span>
+                    <span>Your plan</span>
+                  </div>
+                </div>
+                <div className="art-note">
+                  <Icon name="check" size={18} />
+                  <span>
+                    A clear next step.
+                    <br />
+                    <strong>A future on your terms.</strong>
+                  </span>
+                </div>
+                <span className="art-index">01 / EXPLORE WHAT’S POSSIBLE</span>
               </div>
-            ) : message ? (
-              <div className="status-message">
-                <Icon name="check" size={16} />
-                {message}
+            </section>
+            <section className="how-it-works" aria-label="How it works">
+              <div className="how-heading">
+                <span className="eyebrow">SMALL STEPS. REAL DIRECTION.</span>
+                <h2>From “what now?” to “what’s next.”</h2>
               </div>
-            ) : null}
-          </div>
-          {error && (
-            <div className="error-banner" id="profile-error" role="alert">
-              <Icon name="info" />
-              <div>
-                <strong>This step did not work.</strong>
-                <p>{error}</p>
-              </div>
-              <Button small onClick={() => setError("")}>
-                Close message
-              </Button>
-            </div>
-          )}
-          {initial ? (
-            <div className="initial-loading">
-              <span className="spinner" />
-              <h2>Loading the app</h2>
-              <p>Getting the job and skill information.</p>
-            </div>
-          ) : !system ? (
-            <div className="empty">
-              <h2>The app could not load</h2>
-              <p>Your entries are still here. Try again in a moment.</p>
-              <Button
-                primary
-                onClick={() => {
-                  void bootstrap();
-                }}
-                disabled={busy}
-              >
-                Try again
-              </Button>
-            </div>
-          ) : (
-            <>
-              {stage === 0 && (
-                <Personal
-                  key={demo}
-                  profile={profile}
-                  setProfile={setProfile}
-                  skills={skills}
-                  occupations={occupations}
-                  analysis={analysis}
-                  onAnalyze={() => {
-                    void analyze();
-                  }}
-                  onContinue={() => {
-                    void navigate(1);
-                  }}
-                  busy={busy}
-                  tasks={tasks}
-                  run={run}
-                  onAssessment={assessed}
-                />
-              )}
-              {stage === 1 &&
-                (recommendations ? (
-                  <CareerResults
-                    recommendations={recommendations}
-                    gaps={gaps}
-                    impact={impact}
-                    scenarios={scenarios}
-                    selected={selected}
-                    select={(id) => {
-                      void changeCareer(id);
-                    }}
-                    scenario={scenario}
-                    setScenario={(s) => {
-                      void changeScenario(s);
-                    }}
-                    busy={busy}
-                    skills={skills}
-                    onContinue={() => {
-                      void navigate(2);
-                    }}
-                  />
-                ) : (
-                  <Empty>Complete your profile to see career options.</Empty>
+              <div className="how-grid">
+                {[
+                  {
+                    title: "Start with your story",
+                    text: "Upload your CV or fill in a few details. We’ll work with what you already know.",
+                    icon: "profile",
+                  },
+                  {
+                    title: "Get to know your skills",
+                    text: "Rate your confidence. Take an optional short quiz for a clearer starting point.",
+                    icon: "check",
+                  },
+                  {
+                    title: "Find your next move",
+                    text: "Explore career matches, build a learning roadmap and find places to apply.",
+                    icon: "roadmap",
+                  },
+                ].map((item, i) => (
+                  <div key={item.title} className="how-card">
+                    <div className="how-card-top">
+                      <Icon name={item.icon} size={23} />
+                      <span>0{i + 1}</span>
+                    </div>
+                    <h3>{item.title}</h3>
+                    <p>{item.text}</p>
+                  </div>
                 ))}
-              {stage === 2 && roadmap && (
-                <RoadmapResults
-                  roadmap={roadmap}
-                  simulation={simulation}
-                  simulate={(id, level) => {
-                    void simulate(id, level);
-                  }}
-                  busy={busy}
-                  skills={skills}
-                  onContinue={() => {
-                    void navigate(3);
-                  }}
-                />
-              )}
-              {stage === 3 && employers && (
-                <EmployerResults employers={employers} skills={skills} />
-              )}
-              {stage === 4 && (
-                <Insights
-                  data={system}
-                  occupations={occupations}
-                  run={run}
-                  busy={busy}
-                />
-              )}
-            </>
-          )}
-          <footer className="workspace-footer">
-            <span>SHIFT//OS</span>
-            <span>Plan your career with clear information.</span>
-            <span>Malaysia · English</span>
-            <button
-              className="team-data-link"
-              onClick={() => void navigate(4)}
-              disabled={busy}
-            >
-              System data
-            </button>
-          </footer>
-        </main>
-      </div>
+              </div>
+            </section>
+            <div className="landing-note">
+              <Icon name="info" size={17} />
+              <p>
+                Starting in Malaysia. Career matches are planning estimates to
+                help you explore your options.
+              </p>
+            </div>
+          </>
+        )}
+        {stage === 0 && (
+          <ProfileSetup
+            profile={profile}
+            setProfile={setProfile}
+            skills={skills}
+            occupations={occupations}
+            tasks={(system?.catalog?.tasks || []) as Task[]}
+            busy={busy || loading}
+            uploadName={uploadName}
+            uploadMessage={uploadMessage}
+            onUpload={() => fileInput.current?.click()}
+            onContinue={() => void reviewSkills()}
+          />
+        )}
+        {stage === 1 && (
+          <SkillReview
+            profile={profile}
+            setProfile={setProfile}
+            skills={skills}
+            analysis={analysis}
+            busy={busy}
+            run={run}
+            onAssessment={assessed}
+            onBack={() => go(0)}
+            onContinue={() => void careerData()}
+          />
+        )}
+        {stage === 2 && recommendations && gaps && impact && (
+          <CareerWorkspace
+            profile={profile}
+            skills={skills}
+            occupations={occupations}
+            recommendations={recommendations}
+            gaps={gaps}
+            impact={impact}
+            scenarios={scenarios}
+            selected={selected}
+            scenario={scenario}
+            onCareer={(id) => void careerData(id)}
+            onScenario={(s) => void careerData(selected, s)}
+            roadmap={roadmap}
+            loadRoadmap={() => void loadRoadmap()}
+            simulation={simulation}
+            simulate={(id, level) => void simulate(id, level)}
+            busy={busy}
+            onBack={() => go(1)}
+          />
+        )}
+        {stage === 3 && system && (
+          <>
+            <div className="page-intro">
+              <span className="eyebrow">BEHIND THE RESULTS</span>
+              <h1>System data</h1>
+              <p>
+                Explore the catalogue and the calculations behind your plan.
+              </p>
+            </div>
+            <Insights
+              data={system}
+              occupations={occupations}
+              run={run}
+              busy={busy}
+            />
+          </>
+        )}
+      </main>
+      <footer className="site-footer">
+        <div>
+          <span className="footer-brand">SHIFT//OS</span>
+          <span>Your potential. Your direction.</span>
+        </div>
+        <button onClick={() => go(3)} disabled={busy}>
+          System data & methodology <Icon name="link" size={13} />
+        </button>
+        <span>Made for your next chapter.</span>
+      </footer>
     </div>
   );
 }

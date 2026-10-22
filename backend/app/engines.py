@@ -186,7 +186,10 @@ def analyze_profile(profile: Profile, data: dict | None = None) -> dict:
     data = data or catalog()
     valid_ids = {s["id"] for s in data["skills"]}
     unknown = (
-        set(profile.skill_ids) | set(profile.reported_experience) | {e.skill_id for e in profile.cv_evidence}
+        set(profile.skill_ids)
+        | set(profile.reported_experience)
+        | set(profile.self_ratings)
+        | {e.skill_id for e in profile.cv_evidence}
     ) - valid_ids
     if unknown:
         raise HTTPException(422, "Unknown skill identifiers: " + ", ".join(sorted(unknown)))
@@ -196,6 +199,7 @@ def analyze_profile(profile: Profile, data: dict | None = None) -> dict:
         set(profile.skill_ids)
         | set(detected_by_id)
         | set(profile.reported_experience)
+        | set(profile.self_ratings)
         | {e.skill_id for e in profile.cv_evidence}
     )
     from .assessment import lookup_results
@@ -205,9 +209,7 @@ def analyze_profile(profile: Profile, data: dict | None = None) -> dict:
     for result in results:
         skill_id = result["skill_id"]
         previous = assessed.get(skill_id)
-        if not previous or (result.get("estimated_proficiency") or 0) > (
-            previous.get("estimated_proficiency") or 0
-        ):
+        if not previous or result.get("completed_at", 0) >= previous.get("completed_at", 0):
             assessed[skill_id] = result
         ids.add(skill_id)
     skills = []
@@ -234,6 +236,7 @@ def analyze_profile(profile: Profile, data: dict | None = None) -> dict:
                 "name": skill_name(sid, data),
                 "detected": True,
                 "reported_experience": report,
+                "self_reported_level": profile.self_ratings.get(sid),
                 "estimated_proficiency": result.get("estimated_proficiency") if result else None,
                 "confidence": result.get("confidence", "Moderate") if result else "Low",
                 "assessment_status": result.get("assessment_status", "provisional")
@@ -266,7 +269,12 @@ def gaps(profile: Profile, occ: dict, data: dict | None = None) -> dict:
     for req in requirements(occ):
         sid = req["skill_id"]
         e = evidence.get(sid, {})
-        level = e.get("estimated_proficiency")
+        tested_level = e.get("estimated_proficiency")
+        level = (
+            tested_level
+            if e.get("assessment_status") in {"provisional", "insufficient_evidence"}
+            else e.get("self_reported_level")
+        )
         needed = req["required_level"]
         rows.append(
             {
@@ -275,7 +283,13 @@ def gaps(profile: Profile, occ: dict, data: dict | None = None) -> dict:
                 "required_level": needed,
                 "demonstrated_level": None,
                 "provisional_level": level,
-                "status": "unverified" if level is None else "provisional" if level >= needed else "gap",
+                "status": "unverified"
+                if level is None
+                else "self-reported"
+                if tested_level is None
+                else "provisional"
+                if level >= needed
+                else "gap",
                 "gap": None,
                 "provisional_gap": None if level is None else max(0, needed - level),
                 "assessment_status": e.get("assessment_status", "Unverified"),
@@ -315,7 +329,9 @@ def career_score(profile: Profile, occ: dict, scenario: str, data: dict) -> dict
         weighted += weight * min(1, middle / required)
         low += weight * min(1, lower / required)
         high += weight * min(1, upper / required)
-        confirmed += weight if level is not None and level >= required else 0
+        confirmed += (
+            weight if level is not None and level >= required and row["status"] != "self-reported" else 0
+        )
         total_weight += weight
     denominator = total_weight or 1
     skill_component = weighted / denominator * 100
@@ -341,7 +357,11 @@ def career_score(profile: Profile, occ: dict, scenario: str, data: dict) -> dict
             round(high / denominator * 100 * WEIGHTS["skills"] + fixed),
         ],
         "coverage": round(100 * confirmed / denominator),
-        "matching_skills": [r["name"] for r in skill_rows if r["status"] in {"met", "provisional"}],
+        "matching_skills": [
+            r["name"]
+            for r in skill_rows
+            if r["provisional_level"] is not None and r["provisional_level"] >= r["required_level"]
+        ],
         "unverified_skills": [r["name"] for r in skill_rows if r["status"] == "unverified"],
         "missing_skills": [r["name"] for r in skill_rows if r["status"] == "gap"],
         "explanation": f"Planning index combines skill evidence ({WEIGHTS['skills']:.0%}), interests ({WEIGHTS['interests']:.0%}), and learning feasibility ({WEIGHTS['feasibility']:.0%}). Short-assessment levels remain provisional. Experience is not a pathway penalty.",
@@ -469,7 +489,9 @@ def roadmap(request: IntelligenceRequest) -> dict:
     config = scenario_configuration(request.scenario, data)
     milestones = []
     for row in rows:
-        if row["status"] in {"met", "provisional"}:
+        if row["status"] in {"met", "provisional"} or (
+            row["status"] == "self-reported" and row["provisional_level"] >= row["required_level"]
+        ):
             continue
         sid = row["skill_id"]
         skill = skill_lookup[sid]

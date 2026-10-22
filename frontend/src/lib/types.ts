@@ -4,6 +4,8 @@ export type Profile = {
   country: string;
   employment_country: string;
   education: string;
+  age?: number | null;
+  gender?: string;
   occupation_id: string | null;
   current_occupation_id: string | null;
   experience_years: number;
@@ -12,6 +14,7 @@ export type Profile = {
   cv_evidence: { skill_id: string; source_phrase: string }[];
   skill_ids: string[];
   reported_experience: Record<string, string>;
+  self_ratings: Record<string, number>;
   interests: string[];
   weekly_hours: number;
   budget: "free" | "paid";
@@ -214,6 +217,8 @@ export type Question = {
   type: string;
 };
 export type Assessment = {
+  progress: { answered: number; total: number };
+  source?: string;
   assessment_id: string;
   skill_id: string;
   status: string;
@@ -243,6 +248,7 @@ export const blankProfile: Profile = {
   projects: "",
   skill_ids: [],
   reported_experience: {},
+  self_ratings: {},
   interests: [],
   weekly_hours: 6,
   budget: "free",

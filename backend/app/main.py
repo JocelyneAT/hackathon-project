@@ -10,6 +10,7 @@ from .assessment import get_assessment_result, router as assessment_router
 from .cv import extract_upload
 from .data import database_health, get_catalog, last_import
 from .llm import configuration_status, explain_calculation
+from .jobs import router as jobs_router
 from .schemas import (
     APIResult,
     AssessmentExplanationRequest,
@@ -46,6 +47,7 @@ app.add_middleware(
     allow_credentials=False,
 )
 app.include_router(assessment_router)
+app.include_router(jobs_router)
 
 
 @app.get("/health")

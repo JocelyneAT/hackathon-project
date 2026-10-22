@@ -1,85 +1,44 @@
 ---
-version: alpha
-name: "SHIFT//OS"
-description: "A simple four-step career planning app with plain English, black text, and clear next actions."
+version: beta
+name: SHIFT//OS
+description: A personal career journey using the user's white and blue palette.
 colors:
-  text: "#000000"
-  background: "#F7F8FA"
+  background: "#F5FEFF"
+  supporting-blue: "#AAC0E1"
+  navy: "#0E2F76"
+  text: "#182E50"
+  muted: "#526681"
   surface: "#FFFFFF"
-  accent: "#DCE9FD"
-  border: "#D9DEE7"
-  focus: "#3269BB"
+  border: "#D1DEEC"
 typography:
-  sans:
-    fontFamily: "Arial, Helvetica, sans-serif"
-  display:
-    fontFamily: "Arial, Helvetica, sans-serif"
-  mono:
-    fontFamily: "Consolas, monospace"
-rounded:
-  DEFAULT: "0.5rem"
-  sm: "0.25rem"
-  lg: "0.875rem"
-spacing:
-  section-gap: "2rem"
-  page-max: "78rem"
-components:
-  button: {}
-  card: {}
-  input: {}
-  navigation: {}
+  sans: Arial, Helvetica, sans-serif
+  editorial-accent: Georgia, Times New Roman, serif
 ---
 
 # SHIFT//OS design system
 
-## Overview
+The latest user brief replaces the former sidebar and four-page workflow. Use a welcoming landing page, a compact three-stage progress strip, editable profile fields, skill sliders with optional quizzes, and career results with integrated roadmaps. Job search opens a separate page. Preserve System data and optional scenarios and simulations.
 
-The audience is ASEAN career starters and professionals. The first operational market is Malaysia, with English content and en-MY number conventions. Product register throughout. The supplied development brief owns all business behavior.
+## Palette and typography
 
-The user's latest instruction is plain English with no complex analogies or charts, fewer visible choices, and a fixed learning plan to follow. The four steps are Your profile, Career options, Learning plan and Job options. Each page explains what to do next using short direct sentences. Numbers use plain text or small tables. No charts, bars, meters, or chapter/pathway metaphors. ENERGY 1 / RHYTHM 2 / MOTION 1.
+The supplied reference owns the palette: #F5FEFF, #AAC0E1 and #0E2F76. Navy anchors headings, primary buttons and the featured career. Pale blue provides quieter supporting sections. White groups form content and comparison cards. Muted slate text remains readable against pale surfaces. The runtime tokens and journey styles live in frontend/src/app/journey.css, loaded after the original shared stylesheet. Reuse Button, Field, Panel, Icon and Tag from components/ui.tsx.
 
-The signature is the doubled slash in the user-supplied product name, repeated as quiet separators in the journey and section metadata. No invented logo, photos, decorative graphs, or marketing statistics.
+Use Arial for predictable, local typography. A single Georgia italic word on the landing page adds warmth. Larger, lighter headings and restrained metadata establish hierarchy. No external font requests, stock photographs or decorative performance statistics.
 
-Runtime token owner: CSS custom properties in frontend/src/app/globals.css mirror this frontmatter. Shared Button, Panel, Field and Tag components use those properties. Tailwind is enabled for layout utilities; no independent theme colors.
+## Layout and interactions
 
-## Colors
+The desktop container is 1240px including 32px gutters. The header contains the wordmark and one clear action. The three-stage strip has numbered steps and a filling line; it is never a large sidebar. A smaller contextual panel accompanies the profile on wide screens. Mobile uses natural document scrolling, one-column forms where necessary and two-column alternative career cards.
 
-Black text is mandatory, including descriptions, disabled controls, buttons and numbers. White surfaces and a cool light background keep long forms readable. Pale blue marks selection and primary actions. Border gray separates content without adding floating shadows. Blue focus outlines identify keyboard position. High contrast mode uses system outlines.
+The landing page gives CV quick start and manual entry equal clarity. CV results fill recognised fields and remain editable. Age and gender are optional and excluded from all scoring. Advanced background, projects, current tasks and learning preferences live in Bonus information.
 
-## Typography
+Each skill has a labelled slider and a ten-question quiz action. A completed quiz returns to the sliders with a provisional result. Explicitly distinguish self estimates, quiz evidence and unknown levels. Foundational knowledge quizzes do not award independent or advanced practical proficiency.
 
-Arial provides compact, predictable forms without network font swaps. Headings use negative tracking and restrained weight, giving the product name its technical character without futuristic decoration. Consolas is reserved for IDs, formulas, and methodology. Numeric comparisons use tabular figures. Body text is 14-16px with 1.5 line height.
+The leading career is a larger navy feature. Target mode features the user's original target even while another career is explored. Show five careers initially in exploration mode; target mode shows the target and five alternatives. View all expands the finite catalogue. Selected-career details include description, fit, estimated skill alignment, listed skills, learning needs and AI task exposure. Never describe exposure as a measured probability of losing a job.
 
-## Layout
+Learning roadmaps open inside career results. Keep every generated step and its primary learning link, practice task and verification, followed by the final project. Optional additional materials remain collapsed. Export buttons invoke browser Save as PDF and a readable JPEG download. Print styles isolate the roadmap. Job search opens in another tab so private profile state remains available in the original tab.
 
-Desktop: 248px journey sidebar and natural-height content capped at 78rem. The profile uses one focused form column, with optional work/study/location, CV and skill-check details collapsed. It has no duplicate journey explainer. On screens under 900px, navigation becomes a horizontal journey, then a two-column compact navigation under 600px. Forms always scroll with the document. Dataset tables own horizontal overflow. Spacing ranges from 8px control gaps to 32px sections, based on information grouping.
+Job search offers title, location, arrangement and role-level filters, then individual retrieved openings. Each card includes a small source platform icon/name linked to that exact listing, plus employer, location and source-supplied metadata. Use platform tabs to filter results. Merge duplicates without discarding their source links. Never invent vacancy cards, counts, salaries or employer claims. Loading, empty searches and unavailable sources must be distinct. Providers own final listing availability.
 
-## Elevation & Depth
+## Accessibility and state
 
-Borders and surface tone establish hierarchy. No blur, gradients, or ambient shadows. Selected cards use a stronger border. No dark theme is shipped because the brief requires light surfaces and black text.
-
-## Shapes
-
-14px panel corners distinguish sections; 8px controls and 4px status labels preserve utility. Circular progress markers represent ordered steps only. No decorative pills.
-
-## Components
-
-Native buttons own actions; native selects intentionally delegate popup geometry and keyboard behavior to the operating system. Inputs have explicit labels. Every async operation uses the same busy indicator, accessible status area, inline error, and retry via the original action. Empty results explain the missing prerequisite.
-
-Primary buttons use pale blue fill with black text; secondary buttons use white fill and border; tertiary actions use transparent fill. All targets are at least 44px high. Disabled opacity never reduces black text contrast. Focus is a 3px outline. Selected states use aria-pressed or aria-current.
-
-Cards group actual decisions. Tables use native semantics. Do not use charts or visual score bars. Explain scores in short everyday sentences. Say estimated level or not checked instead of provisional proficiency. Future steps remain disabled until their prerequisites exist. System data stays available through a small footer link for the project team.
-
-The learning plan is one ordered sequence, with all generated milestones included. Every step shows its planned week range, one primary learning material, a concrete practice task and an output to check before moving on. A final project ends the plan. Time estimates exclude that project's unestimated work. AI scenarios, extra learning materials and the single-skill simulator use collapsed details. The main continuation action appears before optional tools.
-
-Forms use noValidate with inline field errors, and retain values on failure. Search is local, capped by dataset size, with a clear button. Uploaded documents are not retained. Skill checks appear inline, avoiding modal focus complexity.
-
-Iconography uses small geometric SVGs for navigation concepts with adjacent text labels. No general AI icons. Motion is limited to 120ms hover feedback and an activity spinner; reduced motion disables animation.
-
-## Do's and Don'ts
-
-- Do connect every displayed score to backend calculations and visible assumptions.
-- Do preserve the profile when changing stage, scenario, or occupation.
-- Do use whitespace to distinguish decisions from supporting evidence.
-- Don't present synthetic records as market findings or real vacancies.
-- Don't substitute decorative KPI tiles for practical next actions.
+Native controls, labelled fields, visible focus, keyboard access, status/error regions and reduced-motion support remain required. Async controls are disabled while requests run; failures preserve input. Numeric indices must come from backend calculations. Keep personal profile data in memory rather than browser storage. System data is read-only and excludes private profile content. Use responsive layouts and forced-color overrides. Maintain current browser workflow tests when changing these interactions.

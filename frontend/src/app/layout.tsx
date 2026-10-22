@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import "./journey.css";
+import "./job-listings.css";
 export const metadata: Metadata = {
   title: "SHIFT//OS | Plan your career",
   description:

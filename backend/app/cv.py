@@ -88,6 +88,40 @@ def extract_text(content: bytes, extension: str) -> str:
     raise HTTPException(415, "Only PDF, DOCX and TXT files are supported.")
 
 
+def profile_fields(text: str) -> dict:
+    """Extract only explicitly labelled demographics; never infer from names."""
+    result = {}
+    age = re.search(r"(?im)^\s*age\s*:\s*(\d{2})\b", text)
+    if age and 16 <= int(age[1]) <= 100:
+        result["age"] = int(age[1])
+    gender = re.search(r"(?im)^\s*gender\s*:\s*(woman|man|female|male|non-binary)\s*$", text)
+    if gender:
+        result["gender"] = {"female": "Woman", "male": "Man"}.get(gender[1].lower(), gender[1].capitalize())
+    country = re.search(r"(?im)^\s*(?:country(?: of origin)?|nationality)\s*:\s*([\w -]+)\s*$", text)
+    if country:
+        names = {
+            "malaysia": "MY",
+            "singapore": "SG",
+            "indonesia": "ID",
+            "philippines": "PH",
+            "thailand": "TH",
+            "vietnam": "VN",
+            "brunei": "BN",
+            "cambodia": "KH",
+            "laos": "LA",
+            "myanmar": "MM",
+            "timor-leste": "TL",
+        }
+        code = names.get(country[1].strip().lower())
+        if code:
+            result["country"] = code
+    years = re.search(r"\b(\d{1,2})\+?\s+years?\s+(?:of\s+)?(?:professional\s+)?experience\b", text, re.I)
+    if years and int(years[1]) <= 65:
+        result["experience_years"] = int(years[1])
+        result["career_stage"] = "professional" if int(years[1]) else "starter"
+    return result
+
+
 async def extract_upload(file: UploadFile) -> dict:
     extension = (file.filename or "").rsplit(".", 1)[-1].lower()
     if extension not in {"txt", "pdf", "docx"}:
@@ -118,6 +152,7 @@ async def extract_upload(file: UploadFile) -> dict:
                 for s in detect_skills(text)
             ],
             "sections": sections(text),
+            "profile_fields": profile_fields(text),
             "characters": len(text),
             "warnings": [
                 "Rule-based extraction identifies possible skills only. Review and correct these suggestions.",

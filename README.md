@@ -1,6 +1,6 @@
 # SHIFT//OS
 
-An evidence-aware career planning MVP for Malaysia, with country coverage architecture for all eleven ASEAN countries. The four-step application connects Your profile, Career options, Learning plan and Job options. System data explains the data and calculations. The user interface uses plain English and simple tables without charts.
+An evidence-aware career planning MVP for Malaysia, with country coverage architecture for all eleven ASEAN countries. A white and blue landing page offers CV quick start or manual entry. A compact progress bar connects background, skill estimates and career matches. Learning roadmaps live within each selected career; a separate job-search page retrieves individual related openings and identifies their original platforms. System data explains the calculations.
 
 Live demo: [Hackathon Project](https://hackathon-project-xewk.onrender.com). The free service may take about a minute to wake after being idle. See [hosting details](docs/hosting.md).
 
@@ -73,7 +73,17 @@ For a production frontend build, set `BACKEND_URL` **before** running `npm --pre
 
 ## Demonstrate the complete workflow
 
-Enter your background or use a synthetic profile in the interface. Extra profile fields, CV upload, skill checks and AI comparisons are available in collapsed sections. The target-career mode respects the chosen occupation. Working professionals can select their actual current tasks. The learning plan includes every generated step in order, with one primary learning link, a practice task and an output check for each skill, followed by a final project. Job comparisons project the whole plan. Optional skill simulations still trigger backend calculations without changing the plan.
+Start by uploading a CV or entering your background manually. CV extraction prefills recognised skills, education, projects, experience snippets and explicitly labelled demographic fields. Review every extracted field and fill any gaps. Optional age and gender never affect rankings. Bonus information includes projects, current tasks and learning preferences.
+
+Rate each selected skill with a slider or take an optional ten-question knowledge quiz. A completed quiz updates the slider with a server-scored provisional result. Quizzes cover foundational levels 1–2 and do not certify practical expertise. Without a provider key, labelled curated quizzes are available for all eleven catalogue skills, including Excel, SQL, Python, HTML and C++. With `OPENAI_API_KEY` configured, the app attempts AI-generated questions and falls back to curated questions if generation fails. Only the public skill name is sent to the provider.
+
+Career results feature the leading match, or the user's target career, with a limited set of alternatives and a view-all action. Each selected career shows fit, estimated skill alignment, existing skills, learning needs and illustrative AI task exposure. Exposure is not a probability of replacement. Generate an integrated learning roadmap with ordered learning resources, practice tasks and a final project. Use **Save as PDF** (the browser print dialog) or **Download JPG** to export it. Optional scenarios and skill simulations remain available. The illustrative employer-match API remains available for the HTTP demonstration and System data.
+
+**Find jobs online** opens a separate page in a new tab, preserving the career plan. It retrieves individual openings for the selected career, location, work arrangement and junior/senior/lead/freelance/internship filters. Each card shows the supplied job title, employer, location, posting date and other available information, with a small **Found on** platform badge linking to the original listing. Matching openings from multiple platforms are merged while retaining their source links. Platform tabs filter the retrieved results. Missing salaries and descriptions are not invented.
+
+Public LinkedIn listings work without a key. Optional `SERPAPI_API_KEY` enables the connected Google Jobs search adapter for additional platforms, such as JobStreet, Indeed and employer sites, when those sources are returned. The API key remains on the backend. Direct JobStreet and Indeed retrieval was blocked during local verification; these platforms are only shown on a listing when an actual source URL was returned. Source outages and empty searches have different feedback. Results are cached for five minutes; availability must be confirmed on the source page. No profile, CV, age or gender is sent to job sources. See [job discovery details](docs/job_discovery.md).
+
+Existing databases created before the expanded skill catalogue can be updated using `scripts/import_dataset.py datasets/seed/catalog.json`. New databases load it automatically. The current illustrative occupation catalogue remains focused on business, operations and analytical careers; recording HTML or C++ skills does not add software occupations to that catalogue.
 
 With the API running, execute the HTTP demonstration:
 
@@ -122,7 +132,7 @@ For PostgreSQL, set `DATABASE_URL` to a SQLAlchemy URL such as `postgresql+psyco
 
 ## Configuration and privacy
 
-`.env.example` lists the supported settings. The Windows launcher and the manual backend command above load root `.env`; Next.js uses its process environment for `BACKEND_URL`. Do not commit `.env` or place secrets in frontend source. Optional `OPENAI_API_KEY` and `OPENAI_MODEL` enable wording assistance for already calculated career explanations; deterministic results remain the source of numeric scores. Provider availability is not required for the app.
+`.env.example` lists the supported settings. The Windows launcher and the manual backend command above load root `.env`; Next.js uses its process environment for `BACKEND_URL`. Do not commit `.env` or place secrets in frontend source. Optional `OPENAI_API_KEY` and `OPENAI_MODEL` enable wording assistance and generated skill quizzes. Question keys stay on the server; numeric scores use explicit deterministic rules. Provider availability is not required for the app.
 
 Profiles are processed per request. CVs are not permanently retained; framework upload handling may use temporary storage which closes after extraction. Assessment results are held in memory for two hours and disappear on restart. If evidence expires or the backend restarts, reload the page to begin a new local profile and retake any optional assessments; private profile fields intentionally do not survive reload. Do not enter sensitive real documents into a public deployment without adding authentication, upload limits, ownership controls and a retention policy. See [known limitations](docs/limitations.md).
 

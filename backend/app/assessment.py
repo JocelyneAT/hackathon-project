@@ -15,6 +15,7 @@ from typing import Literal
 
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel, ConfigDict, Field
+from .quiz_items import ITEMS
 
 
 router = APIRouter(prefix="/api/v1/assessments", tags=["Skill assessments"])
@@ -426,9 +427,50 @@ QUESTION_BANK = {
 }
 
 
+SKILL_NAMES.update(
+    {
+        "html": "HTML",
+        "cpp": "C++",
+        "power-bi": "Power BI",
+        "communication": "Communication",
+        "automation": "Workflow Automation",
+        "sustainability": "Sustainability Reporting",
+    }
+)
+for _skill, _rows in ITEMS.items():
+    LEVEL_DESCRIPTORS.setdefault(
+        _skill,
+        [
+            "Recognise foundational terminology.",
+            "Interpret common practical situations.",
+            "Apply the skill independently.",
+            "Solve complex problems.",
+            "Design advanced solutions.",
+        ],
+    )
+    for _index, (_prompt, _correct, *_distractors) in enumerate(_rows):
+        _options = list(_distractors)
+        _position = _index % 4
+        _options.insert(_position, _correct)
+        QUESTION_BANK.setdefault(_skill, []).append(
+            _item(
+                _skill,
+                f"extended-{_index}",
+                1 if _index % 2 == 0 else 2,
+                _prompt.split("?")[0][:90],
+                _prompt,
+                tuple(_options),
+                chr(97 + _position),
+                _correct,
+            )
+        )
+
+
 class StartAssessment(BaseModel):
     model_config = ConfigDict(extra="forbid")
-    skill_id: Literal["sql", "python", "excel", "statistics", "business-analysis"]
+    skill_id: str = Field(min_length=1, max_length=100)
+    question_count: Literal[3, 10] = 3
+    generate: bool = False
 
 
 class SubmitAnswer(BaseModel):
@@ -489,6 +531,7 @@ class AssessmentResult(BaseModel):
 
 
 class AssessmentState(BaseModel):
+    source: str
     assessment_id: str
     skill_id: str
     status: Literal["in_progress", "completed"]
@@ -554,8 +597,9 @@ def _view(session: dict) -> dict:
         "status": session["status"],
         "question": _public_question(session["current_question"]),
         "result": deepcopy(session.get("result")),
-        "progress": {"answered": len(session["attempts"]), "total": MAX_QUESTIONS},
-        "limitations": LIMITATIONS,
+        "progress": {"answered": len(session["attempts"]), "total": session["total"]},
+        "limitations": session["limitations"],
+        "source": session["source"],
     }
 
 
@@ -564,10 +608,16 @@ def _estimate(session: dict) -> dict:
     correct = sum(item["correct"] for item in attempts)
     application_passed = any(item["correct"] and item["difficulty"] == 2 for item in attempts)
     # A single harder answer is insufficient; require a second supporting item.
-    level = 2 if correct >= 2 and application_passed else (1 if correct >= 1 else None)
-    confidence = "moderate" if correct == MAX_QUESTIONS and application_passed else "low"
+    minimum_application = 7 if session["total"] == 10 else 2
+    minimum_foundation = 4 if session["total"] == 10 else 1
+    level = (
+        2
+        if correct >= minimum_application and application_passed
+        else (1 if correct >= minimum_foundation else None)
+    )
+    confidence = "moderate" if correct == session["total"] and application_passed else "low"
     explanation = (
-        f"{correct} of {len(attempts)} curated knowledge items answered correctly. "
+        f"{correct} of {len(attempts)} knowledge items answered correctly. "
         + (
             f"Provisional Level {level}: {LEVEL_DESCRIPTORS[session['skill_id']][level - 1]} "
             if level is not None
@@ -586,10 +636,10 @@ def _estimate(session: dict) -> dict:
         "correct_count": correct,
         "explanation": explanation,
         "tested_competencies": [item["competency"] for item in attempts],
-        "rubric_applied": "Exact option-ID scoring; max Level 2 with at least two correct items including an application item. No advanced levels awarded.",
+        "rubric_applied": f"Exact option-ID scoring; max Level 2 with at least {minimum_application} correct items including an application item. No advanced levels awarded.",
         "attempts": deepcopy(attempts),
-        "source": "SHIFT//OS curated assessment-1.0",
-        "limitations": LIMITATIONS,
+        "source": session["source"],
+        "limitations": session["limitations"],
         "completed_at": _now(),
         "verification": "Not professionally verified; foundational provisional evidence only",
     }
@@ -620,7 +670,32 @@ def available_assessments() -> dict:
 
 
 @router.post("/start", response_model=AssessmentState)
-def start_assessment(request: StartAssessment) -> dict:
+async def start_assessment(request: StartAssessment) -> dict:
+    if request.skill_id not in QUESTION_BANK:
+        raise HTTPException(422, "No quiz is available for this skill.")
+    bank = QUESTION_BANK[request.skill_id]
+    source = "Curated practice quiz"
+    if request.generate and request.question_count == 10:
+        from .llm import generate_quiz
+
+        generated = await generate_quiz(SKILL_NAMES[request.skill_id])
+        if generated:
+            bank = [
+                _item(
+                    request.skill_id,
+                    f"generated-{i}",
+                    q["difficulty"],
+                    q["competency"],
+                    q["prompt"],
+                    tuple(q["options"]),
+                    chr(97 + q["correct_index"]),
+                    q["rationale"],
+                )
+                for i, q in enumerate(generated)
+            ]
+            for item in bank:
+                item["authoring_metadata"]["author"] = "AI-generated; not independently validated"
+            source = "AI-generated practice quiz"
     with _lock:
         current_time = _now()
         for assessment_id in list(_sessions):
@@ -632,8 +707,14 @@ def start_assessment(request: StartAssessment) -> dict:
         session = {
             "assessment_id": assessment_id,
             "skill_id": request.skill_id,
+            "bank": bank,
+            "total": request.question_count,
+            "source": source,
+            "limitations": LIMITATIONS
+            if request.question_count == 3
+            else "Ten knowledge questions sample foundational ability only; not a professional certification. Results are provisional and capped at level 2. Independent practical performance is not tested.",
             "status": "in_progress",
-            "current_question": QUESTION_BANK[request.skill_id][0],
+            "current_question": bank[0],
             "attempts": [],
             "created_at": current_time,
             "expires_at": current_time + SESSION_TTL_SECONDS,
@@ -673,14 +754,14 @@ def submit_answer(request: SubmitAnswer) -> dict:
                 "score": 1 if correct else 0,
             }
         )
-        if len(session["attempts"]) >= MAX_QUESTIONS:
+        if len(session["attempts"]) >= session["total"]:
             session["status"] = "completed"
             session["current_question"] = None
             session["result"] = _estimate(session)
         else:
             target = min(2, question["difficulty"] + 1) if correct else max(1, question["difficulty"] - 1)
             attempted = {item["question_id"] for item in session["attempts"]}
-            unattempted = [item for item in QUESTION_BANK[session["skill_id"]] if item["id"] not in attempted]
+            unattempted = [item for item in session["bank"] if item["id"] not in attempted]
             candidates = [item for item in unattempted if item["difficulty"] == target]
             session["current_question"] = (candidates or unattempted)[0]
         return _view(session)

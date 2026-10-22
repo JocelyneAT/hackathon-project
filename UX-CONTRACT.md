@@ -1,23 +1,30 @@
 # SHIFT//OS interaction contract
 
-Business source: the user's complete master development prompt, sections 3-12, 16-17, 21, 24, and 28.
+The latest user redesign request owns this workflow. The original four-stage sidebar is replaced by landing -> background -> skill estimates and optional quizzes -> career results. Roadmaps belong to the selected career; job search is a separate route opened in a new tab.
 
-Canonical UI owners are shared components in frontend/src/components/ui.tsx and the single profile state in frontend/src/app/page.tsx. Native selects own all single-select popups. The global stylesheet owns colors, scrollbars, focus, responsive spacing, and reduced motion.
+## Canonical owners
 
-## Canonical UI Map
+| Capability | Owner | Contract |
+| --- | --- | --- |
+| Profile and request state | frontend/src/app/page.tsx | One in-memory profile; bounded errors; downstream invalidation |
+| Background and CV review | components/journey-profile.tsx | Extracted values are editable; missing fields can be filled manually |
+| Skill sliders and quizzes | components/journey-profile.tsx | Self ratings stay separate from server-owned assessment evidence |
+| Career ranking and roadmap | components/career-workspace.tsx | Featured leading match or original target, finite alternatives, integrated exportable plan |
+| Job discovery | app/jobs/page.tsx + backend/app/jobs.py | Individual retrieved openings with source platform badges and original listing links |
+| Buttons and fields | components/ui.tsx | Native semantics, clear labels and visible focus |
+| Palette and layout | app/journey.css | Supplied white/blue/navy palette, compact progress, responsive reflow |
+| Scores and assessment keys | backend/app | Deterministic numeric rules; no client-supplied quiz scores |
 
-| Capability | Canonical owner | Source of truth | Allowed variants | Verification |
-|---|---|---|---|---|
-| Select/Listbox | Native HTML select, shared Field wrapper | DESIGN.md | native platform popup | Playwright keyboard and selection |
-| Form | Personal component + shared Field + profile schema | user brief + backend schemas | starter / professional | workflow validation tests |
-| Scrollbar | globals.css document baseline | DESIGN.md | default / forced colors | computed CSS + narrow overflow |
+## Flow and evidence
 
-Table selection, date inputs, destructive CRUD, and modal/toast systems are not part of this planning workflow. Inline shared status/error regions own feedback. Reference tables intentionally render the small finite occupation catalog; the extensible dataset explorer paginates in ten-record pages.
+CV extraction fills recognised skills, education, projects, experience snippets and explicitly labelled country, age, gender and experience years. No demographic inference from names. The form is still the user's review point. Optional age and gender never influence career ranking. Employment-country coverage remains Malaysia; country of origin can differ.
 
-The four stages share an in-memory profile. Navigation preserves input; reload intentionally clears private background and extracted document content. No accounts or browser-persistent profile storage. All scores come from FastAPI. Edits invalidate downstream results and selected milestones; returning to the results fetches fresh calculations. Target mode respects the user's occupation. Assessments are optional and server-owned.
+Skill sliders are estimates, not demonstrated abilities. A completed quiz supersedes the self estimate, including an insufficient-evidence result. Retakes use the latest completed result. Existing three-question API callers remain supported; the interface requests ten unique questions. Optional AI generation receives only a public skill name, stores no provider response externally and falls back to an honestly labelled curated bank. Answer keys never leave the server. Assessments remain temporary server sessions. Foundational results are capped at level 2.
 
-Flow ledger: profile form -> analyze -> busy -> optional evidence review or career options; failure keeps values with inline correction. Career/scenario selection -> backend computation -> result in same panel. Fixed complete roadmap -> employer request with every generated milestone ID -> projected alignment. There are no milestone inclusion controls in the user flow. Week ranges use cumulative hours and the user's weekly study time, preserving backend prerequisite order. The final project follows the skill steps without an invented time estimate. All screens use one busy/status/error treatment. Duplicate submits disabled. Dataset explorer uses local filters with explicit clear and bounded pagination; filters are transient diagnostics and excluded from shared URLs. Uploaded private text is never shown in System data.
+Changing input invalidates career results, roadmaps and simulations. Returning to earlier steps preserves fields in memory. Choosing an alternative career preserves the original target and changes only the detail/roadmap selection. Scenario changes refresh backend calculations. The default exploration list contains the leading feature and four alternatives; target mode includes the target and five alternatives. View all expands the catalogue without inventing careers.
 
-Loading reserves content area; errors stay visible until correction or next operation. Offline requests fail with a retryable explanation. No optimistic score changes. No automatic retries of assessment submissions. Request timeouts are bounded. Stale responses are ignored. System Insights is read-only and displays synthetic diagnostics only.
+Roadmaps use every backend milestone in prerequisite order with cumulative week ranges, a primary learning link, practice task and output check. Include the final project without inventing its duration. PDF uses browser print and isolates the roadmap; JPEG exports all steps. Optional skill simulations change only their requested skill and leave the profile and roadmap intact.
 
-Accessibility target WCAG 2.2 AA. Native semantics, black text, visible focus, 44px controls, skip link, aria-live status, keyboard navigation, mobile reflow. No custom modal, date picker, or destructive workflow. Native select popup geometry is intentionally accepted. All required actions remain available on narrow screens.
+Job discovery requests contain only public title/location/preferences and no profile text or CV evidence. The backend retrieves public LinkedIn listings and optionally additional platforms through the configured search provider. Each card identifies its actual source from the listing URL; badges must never infer platform from an untrusted label. Source links open the individual listing in a new tab. Deduplicate matching title/company/location records while preserving every source link. Show supplied metadata only. Distinguish provider failure, valid empty results and partial results; cancel obsolete searches and ignore stale responses. Keep illustrative employer API outputs separate from real job discovery.
+
+Loading and errors use shared visible feedback. Errors keep entered data and allow resubmission. Do not retry assessment submissions automatically. Keyboard access, responsive reflow, reduced motion and forced colors are supported. Native selects retain operating-system popup behaviour. Reload intentionally clears private profile fields. System data remains read-only.

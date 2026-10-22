@@ -19,6 +19,8 @@ class Profile(BaseModel):
     country: str = "MY"
     employment_country: str = "MY"
     education: str = Field(default="", max_length=500)
+    age: int | None = Field(default=None, ge=16, le=100)
+    gender: str = Field(default="", max_length=80)
     occupation_id: str | None = None
     current_occupation_id: str | None = None
     experience_years: float = Field(default=0, ge=0, le=65)
@@ -27,6 +29,7 @@ class Profile(BaseModel):
     skill_ids: list[str] = Field(default_factory=list, max_length=100)
     cv_evidence: list[CVEvidence] = Field(default_factory=list, max_length=100)
     reported_experience: dict[str, str] = Field(default_factory=dict, max_length=100)
+    self_ratings: dict[str, int] = Field(default_factory=dict, max_length=100)
     interests: list[str] = Field(default_factory=list, max_length=30)
     weekly_hours: float = Field(default=6, ge=1, le=60)
     budget: Literal["free", "paid"] = "free"
@@ -46,6 +49,13 @@ class Profile(BaseModel):
     def bounded_reports(cls, value: dict[str, str]) -> dict[str, str]:
         if any(len(key) > 100 or len(text) > 1000 for key, text in value.items()):
             raise ValueError("Experience context must be 1,000 characters or fewer per skill")
+        return value
+
+    @field_validator("self_ratings")
+    @classmethod
+    def valid_ratings(cls, value: dict[str, int]) -> dict[str, int]:
+        if any(level < 1 or level > 5 for level in value.values()):
+            raise ValueError("Skill estimates must be between 1 and 5")
         return value
 
 
@@ -135,7 +145,7 @@ class GapEntry(PublicRecord):
     required_level: int = Field(ge=1, le=5)
     demonstrated_level: int | None = Field(default=None, ge=1, le=5)
     provisional_level: int | None = Field(default=None, ge=1, le=5)
-    status: Literal["met", "unverified", "provisional", "gap"]
+    status: Literal["met", "unverified", "provisional", "gap", "self-reported"]
     gap: int | None = Field(default=None, ge=0, le=4)
     provisional_gap: int | None = Field(default=None, ge=0, le=4)
     confidence: str

@@ -1,5 +1,9 @@
 # Delivery status
 
+23 October local update: [individual job discovery](job_discovery.md) replaces the platform-directory job page with retrieved openings, source badges and direct listing links.
+
+Latest local work: the white and blue three-stage career journey, CV quick start, skill sliders, ten-question quizzes, integrated roadmap exports and external job-search page are documented in [the redesign delivery record](redesign_delivery.md). The sections below record the earlier four-stage delivery and hosted deployment; the redesign has not been deployed to Render.
+
 Verified locally on 22 October 2026. The production frontend is served at http://127.0.0.1:3000 and the API at http://127.0.0.1:8000 while the local server processes remain running. Restart instructions are in the root README.
 
 Hosted on Render at <https://hackathon-project-xewk.onrender.com>. The Linux container built and started successfully; all nine browser tests passed on the hosted site. See [hosting details](hosting.md) for the private repository, free service behavior and deployment notes.

@@ -1,14 +1,14 @@
 # Skill assessment methodology
 
-SHIFT//OS uses a small, curated knowledge question bank for SQL, Python, Microsoft Excel, Statistics and Business Analysis. The assessment version is `assessment-1.0`. The implementation is in `backend/app/assessment.py`.
+SHIFT//OS offers foundational knowledge quizzes for SQL, Python, Microsoft Excel, Statistics, Business Analysis, Power BI, Communication, Workflow Automation, Sustainability Reporting, HTML and C++. The implementation is in `backend/app/assessment.py`, with additional authored items in `quiz_items.py`. Existing three-question API callers remain supported; the interface requests ten questions.
 
 The assessment is optional. Skipping it leaves demonstrated proficiency unknown. CV keywords, project mentions and self-reported experience do not produce an assessed proficiency level.
 
 ## Item bank and adaptation
 
-Each skill has five internally authored items. An item contains a stable identifier, skill identifier, difficulty, competency, prompt, four answer options, an expected answer, an exact-option scoring rubric, rationale and authoring metadata. Items are curated illustrative assessment content. They have not undergone external psychometric validation.
+Each skill has ten internally authored items. An item contains a stable identifier, skill identifier, difficulty, competency, prompt, four answer options, an expected answer, an exact-option scoring rubric, rationale and authoring metadata. Items are curated illustrative assessment content. They have not undergone external psychometric validation. When a provider key is configured, ten-question requests may generate a validated structured question set using only the public skill name. Provider failures or invalid responses fall back to the curated bank. The response identifies the actual source. Generated questions are also unvalidated practice content.
 
-An assessment starts with a difficulty-1 foundation item. A correct response raises the next target difficulty, up to difficulty 2. An incorrect response lowers the next target difficulty, with a minimum of 1. The assessor chooses an unattempted item at that difficulty, or another unattempted item if necessary. It stops after three responses.
+Curated assessments start with a difficulty-1 item; generated sets use their first assigned item. A correct response raises the next target difficulty, up to difficulty 2. An incorrect response lowers the next target difficulty, with a minimum of 1. The assessor chooses an unattempted item at that difficulty, or another unattempted item if necessary. It stops after the requested three or ten responses, never repeating an item.
 
 The assessor samples only the competencies named by the assigned items. Passing a question about aggregation does not establish ability to optimise queries or administer databases.
 
@@ -22,6 +22,8 @@ Each exact option-ID match receives one point. The estimator uses the following 
 | At least one correct response, without the Level 2 conditions | Provisional Level 1 | Low |
 | At least two correct responses, including a difficulty-2 item | Provisional Level 2 | Low, or Moderate when all three are correct |
 
+For the ten-question interface, 0-3 correct answers leave the level unknown, 4-6 establish provisional level 1, and at least 7 including a difficulty-2 answer establish provisional level 2. Confidence is Moderate only with every question correct and an application item passed; otherwise Low. A quiz result supersedes a self-rated slider value. When a skill is retaken, the latest completed result supersedes earlier attempts, including an insufficient-evidence result.
+
 Level 1 describes awareness and recognition of basic concepts. Level 2 describes interpretation of foundational applications. Skill-specific descriptors for all five levels are returned by the assessment catalogue. Levels 3 to 5 require practical assessment rubrics that this MVP does not implement. A perfect beginner score cannot award advanced expertise.
 
 Confidence is a qualitative evidence category, separate from proficiency. It is not a calibrated statistical probability. A failed short assessment does not establish absence of ability; its result remains unknown rather than Level 0.
@@ -33,7 +35,7 @@ All non-null results remain provisional. They are not a professional certificate
 The router exposes:
 
 - `GET /api/v1/assessments/skills`: supported skills, framework descriptors, scope and limitations.
-- `POST /api/v1/assessments/start`: takes `skill_id` and returns an opaque assessment identifier and assigned item.
+- `POST /api/v1/assessments/start`: takes `skill_id`, optional `question_count` (3 or 10, default 3) and optional `generate` (default false); returns an opaque assessment identifier, progress, source and assigned item.
 - `GET /api/v1/assessments/{assessment_id}/question`: returns the same assigned item without advancing or grading it.
 - `POST /api/v1/assessments/submit`: takes `assessment_id`, `question_id` and an answer option ID.
 - `GET /api/v1/assessments/{assessment_id}/result`: returns completed evidence; incomplete assessments return HTTP 409.

@@ -497,6 +497,48 @@
       "evidence_status": "curated illustrative",
       "country": "MY",
       "dataset_version": "my-demo-2026.10.21-v1"
+    },
+    {
+      "id": "html",
+      "name": "HTML",
+      "aliases": [
+        "Hypertext Markup Language",
+        "HTML5"
+      ],
+      "hours_per_level": 20,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise core terminology",
+        "2": "Interpret foundational examples",
+        "3": "Apply independently in a practical project",
+        "4": "Debug and improve complex implementations",
+        "5": "Design and evaluate advanced solutions"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.22-v2"
+    },
+    {
+      "id": "cpp",
+      "name": "C++",
+      "aliases": [
+        "C++ programming",
+        "CPP"
+      ],
+      "hours_per_level": 20,
+      "prerequisites": [],
+      "levels": {
+        "1": "Recognise core terminology",
+        "2": "Interpret foundational examples",
+        "3": "Apply independently in a practical project",
+        "4": "Debug and improve complex implementations",
+        "5": "Design and evaluate advanced solutions"
+      },
+      "source_id": "shiftos-curated",
+      "evidence_status": "curated illustrative",
+      "country": "MY",
+      "dataset_version": "my-demo-2026.10.22-v2"
     }
   ],
   "occupations": [
@@ -2120,6 +2162,13 @@
       "created_at": "2026-10-21",
       "evidence_status": "curated illustrative",
       "notes": "Official learning links and SDG references; illustrative occupational assumptions and fictional employer fixtures."
+    },
+    {
+      "id": "my-demo-2026.10.22-v2",
+      "name": "Expanded profile and skill quiz catalogue",
+      "created_at": "2026-10-22",
+      "evidence_status": "curated illustrative",
+      "notes": "Adds HTML and C++ profile skills and foundational practice quizzes; occupational assumptions unchanged."
     }
   ]
 }
