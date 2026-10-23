@@ -2,7 +2,7 @@
 
 An evidence-aware career planning MVP for Malaysia, with country coverage architecture for all eleven ASEAN countries. A white and blue landing page offers CV quick start or manual entry. A compact progress bar connects background, skill estimates and career matches. Learning roadmaps live within each selected career; a separate job-search page retrieves individual related openings and identifies their original platforms. System data explains the calculations.
 
-Live demo: [Hackathon Project](https://hackathon-project-xewk.onrender.com). The free service may take about a minute to wake after being idle. See [hosting details](docs/hosting.md).
+Live demo: [Hackathon Project](https://hackathon-project-tg63.onrender.com/). The free service may take about a minute to wake after being idle. See [hosting details](docs/hosting.md).
 
 The interface calls a real FastAPI backend backed by SQLite. Career matching, skill gaps, task exposure, scenarios, learning priorities, skill simulations and projected employer alignment are calculated by deterministic Python engines. The application works without an LLM key.
 
